@@ -4,81 +4,98 @@
             <h1>ORDEN NUMERO: {{ lsecuencia[0].secuencia }}</h1>
             <button (click)="fillGrupoProducto();">cargar</button>
             <br />
-            <H5>CHOCLO</H5>
-            <div class="btn-group" role="group" aria-label="Basic example">
+            <div class="container">
+                <div class="row">
+                    <H5>CHOCLO</H5>
 
-                <li *ngFor="let producto of lproductoschoclo">
-                    <p-button styleClass="p-button-raised" class="p-element" (onClick)="onClickProducto(producto, '+')">
-                        {{producto.nombre}} <br />
-                        {{producto.valor}} <span
-                            [ngClass]="producto.badge == 0 ? 'badge text-bg-secondary' : 'badge rounded-pill text-bg-success'">{{producto.badge}}</span>
-                    </p-button>
-                    <p-button icon="pi pi-times" styleClass="p-button-danger"
-                        (onClick)="onClickProducto(producto, '-')">x</p-button>
-                </li>
-
+                    <div class="col-sm d-grid gap-1" *ngFor="let producto of lproductoschoclo">
+                        <p-button class="btn btn-primary btn-sm"
+                            (onClick)="onClickProducto(producto, '+')">
+                            {{producto.nombre}} <br />
+                            {{producto.valor}} <span
+                                [ngClass]="producto.badge == 0 ? 'badge text-bg-secondary' : 'badge rounded-pill text-bg-success'">{{producto.badge}}</span>
+                                
+                        </p-button>
+                        <span>
+                            <button type="button" class="btn btn-outline-danger" (onClick)="onClickProducto(producto, '-')">x</button>
+                        </span>
+                        <!-- <p-button icon="pi pi-times" styleClass="p-button-danger"
+                            (onClick)="onClickProducto(producto, '-')">x</p-button> -->
+                            
+                    </div>
+                </div>
             </div>
-            <H5>CHOCHO</H5>
-            <div class="btn-group" role="group" aria-label="Basic example">
+            <div class="container">
+                <div class="row">
 
-                <li *ngFor="let producto of lproductoschocho">
-                    <p-button label="" styleClass="p-button-raised" class="p-element"
-                        (onClick)="onClickProducto(producto,'+')"> {{producto.nombre}} <br />
-                        {{producto.valor}} <span
-                            [ngClass]="producto.badge == 0 ? 'badge text-bg-secondary' : 'badge rounded-pill text-bg-success'">{{producto.badge}}</span>
-                    </p-button>
-                    <p-button icon="pi pi-times" styleClass="p-button-danger"
-                        (onClick)="onClickProducto(producto,'-')">x</p-button>
-                </li>
-
+                    <H5>CHOCHO</H5>
+                    <div class="col-sm-2 d-grid gap-2" *ngFor="let producto of lproductoschocho">
+                        <p-button class="btn btn-primary btn-sm"
+                            (onClick)="onClickProducto(producto,'+')"> {{producto.nombre}} <br />
+                            {{producto.valor}} <span
+                                [ngClass]="producto.badge == 0 ? 'badge text-bg-secondary' : 'badge rounded-pill text-bg-success'">{{producto.badge}}</span>
+                        </p-button>
+                        <p-button icon="pi pi-times" styleClass="p-button-danger"
+                            (onClick)="onClickProducto(producto,'-')">x</p-button>
+                    </div>
+                </div>
             </div>
-            <H5>PORCIONES</H5>
-            <div class="btn-group" role="group" aria-label="Basic example">
+            <div class="container">
+                <div class="row">
 
-                <li *ngFor="let producto of lproductosporciones">
-                    <p-button label="" styleClass="p-button-raised" class="p-element"
-                        (onClick)="onClickProducto(producto,'+')"> {{producto.nombre}} <br />
-                        {{producto.valor}} <span
-                            [ngClass]="producto.badge == 0 ? 'badge text-bg-secondary' : 'badge rounded-pill text-bg-success'">{{producto.badge}}</span>
-                    </p-button>
-                    <p-button icon="pi pi-times" styleClass="p-button-danger"
-                        (onClick)="onClickProducto(producto,'-')">x</p-button>
-                </li>
+                    <H5>PORCIONES</H5>
 
+
+                    <div class="col-sm-2 d-grid gap-2" *ngFor="let producto of lproductosporciones">
+                        <p-button class="btn btn-primary btn-sm"
+                            (onClick)="onClickProducto(producto,'+')"> {{producto.nombre}} <br />
+                            {{producto.valor}} <span
+                                [ngClass]="producto.badge == 0 ? 'badge text-bg-secondary' : 'badge rounded-pill text-bg-success'">{{producto.badge}}</span>
+                        </p-button>
+                        <p-button icon="pi pi-times" styleClass="p-button-danger"
+                            (onClick)="onClickProducto(producto,'-')">x</p-button>
+
+                    </div>
+                </div>
             </div>
-            <H5>BEBIDAS</H5>
-            <div class="btn-group" role="group" aria-label="Basic example">
+            <div class="container">
+                <div class="row">
 
-                <li *ngFor="let producto of lproductosbebidas">
-                    <p-button label="" styleClass="p-button-raised" class="p-element"
-                        (onClick)="onClickProducto(producto,'+')"> {{producto.nombre}} <br />
-                        {{producto.valor}} <span
-                            [ngClass]="producto.badge == 0 ? 'badge text-bg-secondary' : 'badge rounded-pill text-bg-success'">{{producto.badge}}</span>
-                    </p-button>
-                    <p-button icon="pi pi-times" styleClass="p-button-danger"
-                        (onClick)="onClickProducto(producto,'-')">x</p-button>
-                </li>
+                    <H5>BEBIDAS</H5>
+                    <div class="col-sm-2 d-grid gap-2" *ngFor="let producto of lproductosbebidas">
+                        <p-button class="btn btn-primary btn-sm"
+                            (onClick)="onClickProducto(producto,'+')"> {{producto.nombre}} <br />
+                            {{producto.valor}} <span
+                                [ngClass]="producto.badge == 0 ? 'badge text-bg-secondary' : 'badge rounded-pill text-bg-success'">{{producto.badge}}</span>
+                        </p-button>
+                        <p-button icon="pi pi-times" styleClass="p-button-danger"
+                            (onClick)="onClickProducto(producto,'-')">x</p-button>
 
+                    </div>
+                </div>
             </div>
-            <H5>OTROS</H5>
-            <div class="btn-group" role="group" aria-label="Basic example">
 
-                <li *ngFor="let producto of lproductosotros">
-                    <p-button label="" styleClass="p-button-raised" class="p-element"
-                        (onClick)="onClickProducto(producto,'+')"> {{producto.nombre}} <br />
-                        {{producto.valor}} <span
-                            [ngClass]="producto.badge == 0 ? 'badge text-bg-secondary' : 'badge rounded-pill text-bg-success'">{{producto.badge}}</span>
-                    </p-button>
-                    <p-button icon="pi pi-times" styleClass="p-button-danger"
-                        (onClick)="onClickProducto(producto,'-')">x</p-button>
-                </li>
+            <div class="container">
+                <div class="row">
 
+                    <H5>OTROS</H5>
+                    <div class="col-sm-2 d-grid gap-2" *ngFor="let producto of lproductosotros">
+                        <p-button class="btn btn-primary btn-sm"
+                            (onClick)="onClickProducto(producto,'+')"> {{producto.nombre}} <br />
+                            {{producto.valor}} <span
+                                [ngClass]="producto.badge == 0 ? 'badge text-bg-secondary' : 'badge rounded-pill text-bg-success'">{{producto.badge}}</span>
+                        </p-button>
+                        <p-button icon="pi pi-times" styleClass="p-button-danger"
+                            (onClick)="onClickProducto(producto,'-')">x</p-button>
+                    </div>
+                </div>
             </div>
         </p-tabPanel>
         <p-tabPanel header="Resumen de orden">
             <h1>ORDEN NUMERO: {{ lsecuencia[0].secuencia }}</h1>
 
-            <p-table #dt [value]="pedido.productos" dataKey="id" [tableStyle]="{'min-width': '50rem'}" [rowHover]="true">
+            <p-table #dt [value]="pedido.productos" dataKey="id" [tableStyle]="{'min-width': '50rem'}"
+                [rowHover]="true">
                 <ng-template pTemplate="header">
                     <tr>
                         <th>Cantidad</th>
@@ -121,28 +138,28 @@
             </div>
             <div class="input-group mb-1">
                 <label for="cambio">Cambio:</label>
-                <input type="text" id="cambio" class="form-control"  [(ngModel)]="cambio"
-                    aria-label="Username" aria-describedby="basic-addon1" [disabled]="true">
+                <input type="text" id="cambio" class="form-control" [(ngModel)]="cambio" aria-label="Username"
+                    aria-describedby="basic-addon1" [disabled]="true">
             </div>
             <div class="input-group mb-1">
                 <label for="nombre">Nombre</label>
-                <input type="text" id="nombre" class="form-control"  [(ngModel)]="pedido.cliente"
-                    aria-label="Username" aria-describedby="basic-addon1" >
+                <input type="text" id="nombre" class="form-control" [(ngModel)]="pedido.cliente" aria-label="Username"
+                    aria-describedby="basic-addon1">
             </div>
             <div class="input-group mb-1">
                 <label for="ruc">Ruc:</label>
-                <input type="text" id="nombre" class="form-control"  [(ngModel)]="pedido.ruc"
-                    aria-label="Username" aria-describedby="basic-addon1" >
+                <input type="text" id="nombre" class="form-control" [(ngModel)]="pedido.ruc" aria-label="Username"
+                    aria-describedby="basic-addon1">
             </div>
             <div class="input-group mb-1">
                 <label for="direccion">Dirección:</label>
-                <input type="text" id="direccion" class="form-control"  [(ngModel)]="pedido.direccion"
-                    aria-label="Username" aria-describedby="basic-addon1" >
+                <input type="text" id="direccion" class="form-control" [(ngModel)]="pedido.direccion"
+                    aria-label="Username" aria-describedby="basic-addon1">
             </div>
             <div class="input-group mb-1">
                 <label for="telefono">Teléfono:</label>
-                <input type="text" id="telefono" class="form-control"  [(ngModel)]="pedido.telefono"
-                    aria-label="Username" aria-describedby="basic-addon1" >
+                <input type="text" id="telefono" class="form-control" [(ngModel)]="pedido.telefono"
+                    aria-label="Username" aria-describedby="basic-addon1">
             </div>
             <div class="card flex justify-content-center">
                 <p-button label="Grabar" [loading]="loading" (onClick)="grabarOrden()"></p-button>

@@ -9,22 +9,24 @@ import { Observable } from 'rxjs';
 })
 export class ProductosService {
 
-  constructor(private firestore:Firestore) { }
+  constructor(private firestore: Firestore) { }
 
-  addProducto(producto: Producto){
+  addProducto(producto: Producto) {
     const productoRef = collection(this.firestore, 'productos');
     return addDoc(productoRef, producto);
   }
 
-  async getProductosPromise(): Promise<Producto[]>{
+  async getProductosPromise(): Promise<Producto[]> {
     const productos: Producto[] = [];
     const q = query(collection(this.firestore, "productos"));
     const querySnapshot = getDocs(q);
     (await querySnapshot).forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
       //console.log(doc.id, " => ", doc.data());
-      const producto: Producto = { nombre: doc.get('nombre'), id: doc.id, valor: doc.get('valor'), 
-      grupo: doc.get('grupo'), activo: doc.get('activo'), ordenaparicion: doc.get('ordenaparicion'), pedidoacocina: doc.get('pedidoacocina') } ;
+      const producto: Producto = {
+        nombre: doc.get('nombre'), id: doc.id, valor: doc.get('valor'),
+        grupo: doc.get('grupo'), activo: doc.get('activo'), ordenaparicion: doc.get('ordenaparicion'), pedidoacocina: doc.get('pedidoacocina')
+      };
       productos.push(producto);
     });
 
@@ -32,12 +34,12 @@ export class ProductosService {
     return productos;
   }
 
-  getProductosObservable(): Observable<Producto[]>{
+  getProductosObservable(): Observable<Producto[]> {
     const productoRef = collection(this.firestore, 'productos');
-    return collectionData(productoRef, {idField:'id'}) as Observable<Producto[]>;
+    return collectionData(productoRef, { idField: 'id' }) as Observable<Producto[]>;
   }
 
-  deleteProducto(producto: Producto){
+  deleteProducto(producto: Producto) {
     const productoDocRef = doc(this.firestore, `productos/${producto.id}`);
     return deleteDoc(productoDocRef);
   }
@@ -47,9 +49,13 @@ export class ProductosService {
     return updateDoc(productoDocRef, { ...producto });
   }
 
-  // query(producto: Producto): Producto[]{
-  //   const queryRef = collection(this.firestore, 'productos');
-  //   const allProductos = query(queryRef, where("nombre","==","diego"));
-  //   //return allProductos;
+  // query(producto: Producto): Producto[] {
+  //   const q = query(collection(this.firestore, "cities"), where("capital", "==", true));
+
+  //   const querySnapshot = await getDocs(q);
+  //   querySnapshot.forEach((doc) => {
+  //     // doc.data() is never undefined for query doc snapshots
+  //     console.log(doc.id, " => ", doc.data());
+  //   });
   // }
 }

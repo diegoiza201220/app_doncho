@@ -28,6 +28,10 @@ import { BadgeModule } from 'primeng/badge';
 import { TabViewModule } from 'primeng/tabview';
 import { DropdownModule } from 'primeng/dropdown';
 import { SplitterModule } from 'primeng/splitter';
+import { LoginComponent } from './components/login/login.component';
+import { ComprasmensualesComponent } from './components/reportes/comprasmensuales/comprasmensuales.component';
+import { VentasmensualesComponent } from './components/reportes/ventasmensuales/ventasmensuales.component';
+import { CalendarModule } from 'primeng/calendar';
 
 @NgModule({
   declarations: [
@@ -36,7 +40,10 @@ import { SplitterModule } from 'primeng/splitter';
     NavbarComponent,
     MainComponent,
     PedidosComponent,
-    CocinaComponent, 
+    CocinaComponent,
+    LoginComponent,
+    ComprasmensualesComponent,
+    VentasmensualesComponent, 
   ],
   imports: [
     BrowserModule,
@@ -44,7 +51,7 @@ import { SplitterModule } from 'primeng/splitter';
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore()), TableModule, MessagesModule, InputTextModule,InputNumberModule,
     ToastModule, FormsModule, BrowserAnimationsModule, BadgeModule, TabViewModule,
-    CheckboxModule, ToolbarModule, ButtonModule, DialogModule, ConfirmDialogModule,DropdownModule,SplitterModule
+    CheckboxModule, ToolbarModule, ButtonModule, DialogModule, ConfirmDialogModule,DropdownModule,SplitterModule, CalendarModule
   ],
   providers: [ConfirmationService],
   bootstrap: [AppComponent]

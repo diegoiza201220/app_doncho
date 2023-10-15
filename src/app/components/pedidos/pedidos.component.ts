@@ -65,6 +65,7 @@ export class PedidosComponent {
   ngOnInit(): void {
     this.getProductosObserver();
     this.getSecuenciaObserver();
+    this.fillGrupoProducto();
   }
 
   getProductosObserver(): void {
