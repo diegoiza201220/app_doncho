@@ -11,10 +11,10 @@ export default interface Orden {
     documentopago: string;
     totalorden: number,
     productos: [{
-        cantidad?: number,
-        plato?: string,
-        preciounitario?: number,
-        preciototal?: number,
-        pedidoacocina?: boolean
+        cantidad: number,
+        plato: string,
+        preciounitario: number,
+        preciototal: number,
+        pedidoacocina: boolean
     }]
 }

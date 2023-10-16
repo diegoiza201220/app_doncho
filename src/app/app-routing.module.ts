@@ -5,16 +5,18 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { MainComponent } from './components/main/main.component';
 import { PedidosComponent } from './components/pedidos/pedidos.component';
 import { CocinaComponent } from './components/cocina/cocina.component';
-import { ComprasmensualesComponent } from './components/reportes/comprasmensuales/comprasmensuales.component';
-import { VentasmensualesComponent } from './components/reportes/ventasmensuales/ventasmensuales.component';
+import { ComprasComponent } from './components/reportes/compras/compras.component';
+import { VentasComponent } from './components/reportes/ventas/ventas.component';
+import { VentasproductosComponent } from './components/reportes/ventasproductos/ventasproductos.component';
 
 const routes: Routes = [
   {path: 'main', component: MainComponent},
   {path: 'productos', component: ProductosComponent},
   {path: 'pedidos', component: PedidosComponent},
   {path: 'cocina', component: CocinaComponent},
-  {path: 'comprasmensuales', component: ComprasmensualesComponent},
-  {path: 'ventasmensuales', component: VentasmensualesComponent},
+  {path: 'compras', component: ComprasComponent},
+  {path: 'ventas', component: VentasComponent},
+  {path: 'ventasproductos', component: VentasproductosComponent},
   {path: '', redirectTo: '/main', pathMatch: 'full'},
   {path: '**', component: MainComponent}
 ];

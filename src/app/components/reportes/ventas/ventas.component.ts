@@ -4,11 +4,11 @@ import { OrdenesService } from 'src/app/services/ordenes.service';
 import * as FileSaver from 'file-saver';
 
 @Component({
-  selector: 'app-ventasmensuales',
-  templateUrl: './ventasmensuales.component.html',
-  styleUrls: ['./ventasmensuales.component.css']
+  selector: 'app-ventas',
+  templateUrl: './ventas.component.html',
+  styleUrls: ['./ventas.component.css']
 })
-export class VentasmensualesComponent {
+export class VentasComponent {
   [x: string]: any;
 
   d1 = new Date();
@@ -19,7 +19,7 @@ export class VentasmensualesComponent {
   }
 
   ngOnInit(): void {
-    var d = new Date();
+    let d = new Date();
     d.setHours(d.getHours() - 5);
     this.d1 = this.d2 = d;
   }
