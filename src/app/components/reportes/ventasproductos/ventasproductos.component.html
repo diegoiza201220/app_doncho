@@ -9,9 +9,11 @@
     </div>
 
     <div class="card">
-        <p-chart type="bar" [data]="basicData" [options]="basicOptions"></p-chart>
+        <p-chart type="bar" [data]="basicDataBar" [options]="basicOptionsBar" width="100%" height="400px" [responsive]="true"></p-chart>
     </div>
-    
+    <div class="card flex justify-content-center">
+        <p-chart type="pie" [data]="basicDataPie" [options]="basicOptionsPie" width="100%" height="400px" [responsive]="true"></p-chart>
+    </div>
     <p-table #dt [value]="ldata" [exportHeader]="'resumen de ventas por productos'"  
         [scrollable]="true" scrollHeight="400px"  [rowHover]="true" 
         [tableStyle]="{'min-width': '60rem'}">

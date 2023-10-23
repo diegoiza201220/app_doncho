@@ -9,6 +9,7 @@ import Formadepago from 'src/app/interfaces/formadepago.interface';
 import { OrdenesService } from 'src/app/services/ordenes.service';
 import { Router, RouterLink } from '@angular/router';
 import { OrdenescocinaService } from 'src/app/services/ordenescocina.service';
+import Secuencia from 'src/app/interfaces/secuencia.interface';
 
 @Component({
   selector: 'app-pedidos',
@@ -24,20 +25,10 @@ export class PedidosComponent {
   lproductosbebidas: any[] = [];
   lproductosotros: any[] = [];
 
-  lsecuencia: any[] = [];
+  lsecuencia: Secuencia[] = [{secuencia:0,id:''}];
   pedido: any = {};
   lordencocina: any[] = [];
-
-  //   secuencial: 0,
-  //   cliente: '',
-  //   ruc: '',
-  //   direccion: '',
-  //   email: '',
-  //   telefono: '',
-  //   tipodepago: '',
-  //   documentopago: '',
-  //   totalorden: 0, productos:any[]
-  // };
+  mostrarCargar: boolean = true;
 
   formasdepago: Formadepago[] = [{ name: 'Tarjeta crédito/débito', code: 'TC/TD' },
   { name: 'Transferencia', code: 'TR' },
@@ -65,7 +56,7 @@ export class PedidosComponent {
   ngOnInit(): void {
     this.getProductosObserver();
     this.getSecuenciaObserver();
-    this.fillGrupoProducto();
+    //this.fillGrupoProducto();
   }
 
   getProductosObserver(): void {
@@ -81,6 +72,10 @@ export class PedidosComponent {
   }
 
   fillGrupoProducto() {
+    if (!this.mostrarCargar){
+      return;
+    }
+
     this.lproductos.forEach(element => {
       element.badge = '0';
       switch (element.grupo) {
@@ -106,11 +101,13 @@ export class PedidosComponent {
         }
       }
     });
-    this.lproductoschoclo.sort((a, b) => a.ordenaparicion.localeCompare(b.ordenaparicion));
-    this.lproductoschocho.sort((a, b) => a.ordenaparicion.localeCompare(b.ordenaparicion));
-    this.lproductosporciones.sort((a, b) => a.ordenaparicion.localeCompare(b.ordenaparicion));
-    this.lproductosbebidas.sort((a, b) => a.ordenaparicion.localeCompare(b.ordenaparicion));
-    this.lproductosotros.sort((a, b) => a.ordenaparicion.localeCompare(b.ordenaparicion));
+    this.mostrarCargar=false;
+    this.lproductoschoclo.sort((a, b) => (a.ordenaparicion > b.ordenaparicion ? -1 : 1));
+    this.lproductoschocho.sort((a, b) => (a.ordenaparicion > b.ordenaparicion ? -1 : 1));
+    this.lproductosporciones.sort((a, b) => (a.ordenaparicion > b.ordenaparicion ? -1 : 1));
+    this.lproductosbebidas.sort((a, b) => (a.ordenaparicion > b.ordenaparicion ? -1 : 1));
+    this.lproductosotros.sort((a, b) => (a.ordenaparicion > b.ordenaparicion ? -1 : 1));
+    console.log(this.mostrarCargar);
   }
 
 

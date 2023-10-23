@@ -1,5 +1,5 @@
 <p-toast></p-toast>
-<p-toolbar styleClass="mb-4">
+<p-toolbar styleClass="mb-4 bg-toolbar">
   <ng-template pTemplate="left">
     <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
     <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedProducts()"
@@ -14,9 +14,9 @@
 
 <p-table #dt [value]="lproductos" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}"
   [globalFilterFields]="['producto.grupo','producto.nombre']" [(selection)]="selectedProductos" [rowHover]="true">
-  <ng-template pTemplate="header">
-    <tr>
-      <th style="width: 3rem">
+  <ng-template pTemplate="header" class=".bg-productos-row">
+    <tr >
+      <th style="width: 3rem" >
         <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
       </th>
       <th pSortableColumn="grupo" style="width:15%">Grupo <p-sortIcon field="grupo"></p-sortIcon></th>
@@ -28,7 +28,7 @@
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-producto let-editing="editing" let-ri="rowIndex">
-    <tr [pEditableRow]="producto">
+    <tr [pEditableRow]="producto" >
       <td>
         <p-tableCheckbox [value]="producto"></p-tableCheckbox>
       </td>

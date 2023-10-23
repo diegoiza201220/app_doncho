@@ -1,93 +1,83 @@
-<div class="card">
+<div class="card" style="background-color: #ffe393;">
     <p-tabView (onChange)="onChangeTab($event)">
         <p-tabPanel header="Selección de platos">
-            <h1>ORDEN NUMERO: {{ lsecuencia[0].secuencia }}</h1>
-            <button (click)="fillGrupoProducto();">cargar</button>
-            <br />
-            <div class="container">
-                <div class="row">
-                    <H5>CHOCLO</H5>
+            <div style="background-color: #ffe393;align-items: center;">
+                <span >
+                    <p-button (onClick)="fillGrupoProducto();" *ngIf="this.mostrarCargar">click para cargar productos!
+                    </p-button>
+                    <H5>ORDEN NUMERO: {{ lsecuencia[0].secuencia }}</H5>
+                </span>
+            </div>
+            <div class="row" style="background-color: #ffe393;">
+                <H6>CHOCLO</H6>
 
-                    <div class="col-sm d-grid gap-1" *ngFor="let producto of lproductoschoclo">
-                        <p-button class="btn btn-primary btn-sm"
-                            (onClick)="onClickProducto(producto, '+')">
-                            {{producto.nombre}} <br />
-                            {{producto.valor}} <span
-                                [ngClass]="producto.badge == 0 ? 'badge text-bg-secondary' : 'badge rounded-pill text-bg-success'">{{producto.badge}}</span>
-                                
-                        </p-button>
-                        <span>
-                            <button type="button" class="btn btn-outline-danger" (onClick)="onClickProducto(producto, '-')">x</button>
-                        </span>
-                        <!-- <p-button icon="pi pi-times" styleClass="p-button-danger"
-                            (onClick)="onClickProducto(producto, '-')">x</p-button> -->
-                            
-                    </div>
+                <div class="col-sm d-grid gap-1" *ngFor="let producto of lproductoschoclo">
+                    <p-button class="btn btn-primary btn-sm" (onClick)="onClickProducto(producto, '+')">
+                        {{producto.nombre}} <br />
+                        {{producto.valor}} <span
+                            [ngClass]="producto.badge == 0 ? 'badge text-bg-secondary' : 'badge rounded-pill text-bg-success'">{{producto.badge}}</span>
+
+                    </p-button>
+                    <span>
+                        <button type="button" class="btn btn-outline-danger"
+                            (onClick)="onClickProducto(producto, '-')">x</button>
+                    </span>
                 </div>
             </div>
-            <div class="container">
-                <div class="row">
+            <div class="row" style="background-color: #ffe393;">
 
-                    <H5>CHOCHO</H5>
-                    <div class="col-sm-2 d-grid gap-2" *ngFor="let producto of lproductoschocho">
-                        <p-button class="btn btn-primary btn-sm"
-                            (onClick)="onClickProducto(producto,'+')"> {{producto.nombre}} <br />
-                            {{producto.valor}} <span
-                                [ngClass]="producto.badge == 0 ? 'badge text-bg-secondary' : 'badge rounded-pill text-bg-success'">{{producto.badge}}</span>
-                        </p-button>
-                        <p-button icon="pi pi-times" styleClass="p-button-danger"
-                            (onClick)="onClickProducto(producto,'-')">x</p-button>
-                    </div>
+                <h6>CHOCHO</h6>
+                <div class="col-sm-2 d-grid gap-2" *ngFor="let producto of lproductoschocho">
+                    <p-button class="btn btn-primary btn-sm" (onClick)="onClickProducto(producto,'+')">
+                        {{producto.nombre}} <br />
+                        {{producto.valor}} <span
+                            [ngClass]="producto.badge == 0 ? 'badge text-bg-secondary' : 'badge rounded-pill text-bg-success'">{{producto.badge}}</span>
+                    </p-button>
+                    <p-button icon="pi pi-times" styleClass="p-button-danger"
+                        (onClick)="onClickProducto(producto,'-')">x</p-button>
                 </div>
             </div>
-            <div class="container">
-                <div class="row">
+            <div class="row" style="background-color: #ffe393;">
 
-                    <H5>PORCIONES</H5>
+                <h6>PORCIONES</h6>
 
 
-                    <div class="col-sm-2 d-grid gap-2" *ngFor="let producto of lproductosporciones">
-                        <p-button class="btn btn-primary btn-sm"
-                            (onClick)="onClickProducto(producto,'+')"> {{producto.nombre}} <br />
-                            {{producto.valor}} <span
-                                [ngClass]="producto.badge == 0 ? 'badge text-bg-secondary' : 'badge rounded-pill text-bg-success'">{{producto.badge}}</span>
-                        </p-button>
-                        <p-button icon="pi pi-times" styleClass="p-button-danger"
-                            (onClick)="onClickProducto(producto,'-')">x</p-button>
+                <div class="col-sm-2 d-grid gap-2" *ngFor="let producto of lproductosporciones">
+                    <p-button class="btn btn-primary btn-sm" (onClick)="onClickProducto(producto,'+')">
+                        {{producto.nombre}} <br />
+                        {{producto.valor}} <span
+                            [ngClass]="producto.badge == 0 ? 'badge text-bg-secondary' : 'badge rounded-pill text-bg-success'">{{producto.badge}}</span>
+                    </p-button>
+                    <p-button icon="pi pi-times" styleClass="p-button-danger"
+                        (onClick)="onClickProducto(producto,'-')">x</p-button>
 
-                    </div>
                 </div>
             </div>
-            <div class="container">
-                <div class="row">
+            <div class="row" style="background-color: #ffe393;">
 
-                    <H5>BEBIDAS</H5>
-                    <div class="col-sm-2 d-grid gap-2" *ngFor="let producto of lproductosbebidas">
-                        <p-button class="btn btn-primary btn-sm"
-                            (onClick)="onClickProducto(producto,'+')"> {{producto.nombre}} <br />
-                            {{producto.valor}} <span
-                                [ngClass]="producto.badge == 0 ? 'badge text-bg-secondary' : 'badge rounded-pill text-bg-success'">{{producto.badge}}</span>
-                        </p-button>
-                        <p-button icon="pi pi-times" styleClass="p-button-danger"
-                            (onClick)="onClickProducto(producto,'-')">x</p-button>
+                <h6>BEBIDAS</h6>
+                <div class="col-sm-2 d-grid gap-2" *ngFor="let producto of lproductosbebidas">
+                    <p-button class="btn btn-primary btn-sm" (onClick)="onClickProducto(producto,'+')">
+                        {{producto.nombre}} <br />
+                        {{producto.valor}} <span
+                            [ngClass]="producto.badge == 0 ? 'badge text-bg-secondary' : 'badge rounded-pill text-bg-success'">{{producto.badge}}</span>
+                    </p-button>
+                    <p-button icon="pi pi-times" styleClass="p-button-danger"
+                        (onClick)="onClickProducto(producto,'-')">x</p-button>
 
-                    </div>
                 </div>
             </div>
+            <div class="row" style="background-color: #ffe393;">
 
-            <div class="container">
-                <div class="row">
-
-                    <H5>OTROS</H5>
-                    <div class="col-sm-2 d-grid gap-2" *ngFor="let producto of lproductosotros">
-                        <p-button class="btn btn-primary btn-sm"
-                            (onClick)="onClickProducto(producto,'+')"> {{producto.nombre}} <br />
-                            {{producto.valor}} <span
-                                [ngClass]="producto.badge == 0 ? 'badge text-bg-secondary' : 'badge rounded-pill text-bg-success'">{{producto.badge}}</span>
-                        </p-button>
-                        <p-button icon="pi pi-times" styleClass="p-button-danger"
-                            (onClick)="onClickProducto(producto,'-')">x</p-button>
-                    </div>
+                <h6>OTROS</h6>
+                <div class="col-sm-2 d-grid gap-2" *ngFor="let producto of lproductosotros">
+                    <p-button class="btn btn-primary btn-sm" (onClick)="onClickProducto(producto,'+')">
+                        {{producto.nombre}} <br />
+                        {{producto.valor}} <span
+                            [ngClass]="producto.badge == 0 ? 'badge text-bg-secondary' : 'badge rounded-pill text-bg-success'">{{producto.badge}}</span>
+                    </p-button>
+                    <p-button icon="pi pi-times" styleClass="p-button-danger"
+                        (onClick)="onClickProducto(producto,'-')">x</p-button>
                 </div>
             </div>
         </p-tabPanel>

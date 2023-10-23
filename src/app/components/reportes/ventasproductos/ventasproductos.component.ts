@@ -1,12 +1,6 @@
-import { LexerRange } from '@angular/compiler';
 import { Component } from '@angular/core';
 import Orden from 'src/app/interfaces/orden.interface';
-import Ventasproductos from 'src/app/interfaces/ventasproductos.interface';
 import { OrdenesService } from 'src/app/services/ordenes.service';
-import { from, Observable } from 'rxjs';
-import * as Rx from 'rxjs';
-import { FormStyle } from '@angular/common';
-
 
 @Component({
   selector: 'app-ventasproductos',
@@ -19,11 +13,16 @@ export class VentasproductosComponent {
   d1 = new Date();
   d2 = new Date();
   lregistros!: Orden[];
+
+
   ldata: any[] = [];
-  //data: any;
-  //opciones: any;
-  basicData: any;
-  basicOptions: any;
+  bgcolor: any[] = [];
+
+  basicDataBar: any;
+  basicOptionsBar: any;
+
+  basicDataPie: any;
+  basicOptionsPie: any;
 
   constructor(private ordenesService: OrdenesService) {
   }
@@ -38,88 +37,135 @@ export class VentasproductosComponent {
     this.ordenesService.queryOrdenesPorFecha(this.d1, this.d2).then(resp => {
       this.lregistros = resp;
     });
-
-    //this.procesarData();
   }
 
   procesarData() {
-
-    const documentStyle = getComputedStyle(document.documentElement);
-        const textColor = documentStyle.getPropertyValue('--text-color');
-        const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-        const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
-
-
     this.lregistros.forEach(element => {
       element.productos.forEach(element2 => {
         this.ldata.push({ id: element2.plato, cantidad: element2.cantidad });
       });
     });
-    console.log('ld', this.ldata);
+
+    this.procesarDataBar();
+    this.procesarDataPie();
+  }
+
+  procesarDataPie() {
+    const documentStyle = getComputedStyle(document.documentElement);
+    const textColor = documentStyle.getPropertyValue('--text-color');
+    let ldataPie: any[] = [];
 
     const result = Object.values(this.ldata.reduce((r, o) => (r[o.id]
       ? (r[o.id].cantidad += o.cantidad)
       : (r[o.id] = { ...o }), r), {}));
 
-    console.log('re', result);
-    this.ldata = result;
+    ldataPie = result;
 
+    const label: any[] = [];
+    const data: any[] = [];
 
-    const lab : any[] = [];
-    const ds : any[]=[];
-
-    this.ldata.forEach(element => {
-      lab.push(element.id);
-      ds.push(element.cantidad);
+    ldataPie.sort((a, b) => (a.cantidad > b.cantidad ? -1 : 1));
+    ldataPie.forEach(element => {
+      label.push(element.id);
+      data.push(element.cantidad);
     });
 
-    console.log('ld',this.ldata);
-    console.log('lab', lab);
-    console.log('ds', ds);
-
-    this.basicData = {
-      labels: lab,//['Q1', 'Q2', 'Q3', 'Q4'],
+    this.basicDataPie = {
+      labels: label,
       datasets: [
-          {
-              label: 'Ventas',
-              data: ds,//// [540, 325, 702, 620],
-              // backgroundColor: ['rgba(255, 159, 64, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(153, 102, 255, 0.2)'],
-              // borderColor: ['rgb(255, 159, 64)', 'rgb(75, 192, 192)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)'],
-              borderWidth: 1
-          }
+        {
+          data: data,
+          backgroundColor: this.bgcolor,
+        }
       ]
-  };
+    };
 
-  this.basicOptions = {
+    this.basicOptionsPie = {
       plugins: {
-          legend: {
-              labels: {
-                  color: textColor
-              }
+        legend: {
+          labels: {
+            usePointStyle: true,
+            color: textColor
           }
-      },
-      scales: {
-          y: {
-              beginAtZero: true,
-              ticks: {
-                  color: textColorSecondary
-              },
-              grid: {
-                  color: surfaceBorder,
-                  drawBorder: false
-              }
-          },
-          x: {
-              ticks: {
-                  color: textColorSecondary
-              },
-              grid: {
-                  color: surfaceBorder,
-                  drawBorder: false
-              }
-          }
+        }
       }
     };
 
+  }
+
+  procesarDataBar() {
+
+    const documentStyle = getComputedStyle(document.documentElement);
+    const textColor = documentStyle.getPropertyValue('--text-color');
+    const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
+    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+
+    let ldataBar: any[] = [];
+
+    const result = Object.values(this.ldata.reduce((r, o) => (r[o.id]
+      ? (r[o.id].cantidad += o.cantidad)
+      : (r[o.id] = { ...o }), r), {}));
+
+    ldataBar = result;
+    const label: any[] = [];
+    const data: any[] = [];
+
+    ldataBar.sort((a, b) => (a.cantidad > b.cantidad ? -1 : 1));
+    ldataBar.forEach(element => {
+      label.push(element.id);
+      data.push(element.cantidad);
+      this.bgcolor.push(this.randomRGB());
+    });
+
+    this.basicDataBar = {
+      labels: label,
+      datasets: [
+        {
+          label: 'Ventas',
+          data: data,
+          backgroundColor: this.bgcolor,
+          borderWidth: 1
+        }
+      ]
+    };
+
+    this.basicOptionsBar = {
+      plugins: {
+        legend: {
+          labels: {
+            color: textColor
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            color: textColorSecondary
+          },
+          grid: {
+            color: surfaceBorder,
+            drawBorder: false
+          }
+        },
+        x: {
+          ticks: {
+            color: textColorSecondary
+          },
+          grid: {
+            color: surfaceBorder,
+            drawBorder: false
+          }
+        }
+      }
+    };
+  }
+
+  randomRGB(): string {
+    let x = Math.floor(Math.random() * 256);
+    let y = Math.floor(Math.random() * 256);
+    let z = Math.floor(Math.random() * 256);
+    let RGBColor = "rgb(" + x + "," + y + "," + z + ")";
+    return RGBColor;
   }
 }
