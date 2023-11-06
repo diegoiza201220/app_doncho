@@ -35,12 +35,12 @@
       <td>
         <p-cellEditor>
           <ng-template pTemplate="input">
-            <input pInputText type="text" [(ngModel)]="producto.grupo">
+              <p-dropdown [options]="lgrupo" appendTo="body" [(ngModel)]="producto.grupo" [style]="{'width':'100%'}"></p-dropdown>
           </ng-template>
           <ng-template pTemplate="output">
-            {{producto.grupo}}
+              {{producto.grupo}}
           </ng-template>
-        </p-cellEditor>
+      </p-cellEditor>
       </td>
       <td>
         <p-cellEditor>
@@ -112,7 +112,7 @@
   <ng-template pTemplate="content">
     <div class="p-field">
       <label for="grupo">Grupo</label>
-      <input type="text" pInputText id="grupo" [(ngModel)]="producto.grupo" required autofocus />
+      <p-dropdown [options]="lgrupo" [(ngModel)]="producto.grupo" appendTo="body"></p-dropdown>
       <small class="p-error" *ngIf="submitted && !producto.grupo">Grupo es requerido.</small>
     </div>
     <div class="p-field">

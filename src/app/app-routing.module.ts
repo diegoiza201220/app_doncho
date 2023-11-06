@@ -8,10 +8,12 @@ import { CocinaComponent } from './components/cocina/cocina.component';
 import { ComprasComponent } from './components/reportes/compras/compras.component';
 import { VentasComponent } from './components/reportes/ventas/ventas.component';
 import { VentasproductosComponent } from './components/reportes/ventasproductos/ventasproductos.component';
+import { IngredientesComponent } from './components/ingredientes/ingredientes.component';
 
 const routes: Routes = [
   {path: 'main', component: MainComponent},
   {path: 'productos', component: ProductosComponent},
+  {path: 'ingredientes', component: IngredientesComponent},
   {path: 'pedidos', component: PedidosComponent},
   {path: 'cocina', component: CocinaComponent},
   {path: 'compras', component: ComprasComponent},

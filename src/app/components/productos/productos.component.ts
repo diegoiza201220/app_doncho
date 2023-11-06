@@ -23,6 +23,14 @@ export class ProductosComponent {
 
   productoDialogo!: boolean;
 
+  lgrupo: SelectItem[] = [
+    { label: 'CHOCLO', value: 'CHOCLO' },
+    { label: 'CHOCHO', value: 'CHOCHO' },
+    { label: 'PORCIONES', value: 'PORCIONES' },
+    { label: 'BEBIDAS', value: 'BEBIDAS' },
+    { label: 'OTROS', value: 'OTROS' }
+  ];
+
   constructor(private productosService: ProductosService, private messageService: MessageService, private confirmationService: ConfirmationService) {
   }
 
