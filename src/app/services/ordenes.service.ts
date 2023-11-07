@@ -23,7 +23,7 @@ export class OrdenesService {
     querySnapshot.forEach((doc) => {
       ordenes.push(doc.data() as Orden);
     });
-    //console.log(ordenes);
+    console.log(ordenes);
     return ordenes;
   }
 

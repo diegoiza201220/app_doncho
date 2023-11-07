@@ -35,6 +35,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { VentasproductosComponent } from './components/reportes/ventasproductos/ventasproductos.component';
 import { ChartModule } from 'primeng/chart';
 import { IngredientesComponent } from './components/ingredientes/ingredientes.component';
+import { OrdenesComponent } from './components/reportes/ordenes/ordenes.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { IngredientesComponent } from './components/ingredientes/ingredientes.co
     ComprasComponent,
     VentasComponent,
     VentasproductosComponent,
-    IngredientesComponent, 
+    IngredientesComponent,
+    OrdenesComponent, 
   ],
   imports: [
     BrowserModule,

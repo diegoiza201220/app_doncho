@@ -9,6 +9,7 @@ import { ComprasComponent } from './components/reportes/compras/compras.componen
 import { VentasComponent } from './components/reportes/ventas/ventas.component';
 import { VentasproductosComponent } from './components/reportes/ventasproductos/ventasproductos.component';
 import { IngredientesComponent } from './components/ingredientes/ingredientes.component';
+import { OrdenesComponent } from './components/reportes/ordenes/ordenes.component';
 
 const routes: Routes = [
   {path: 'main', component: MainComponent},
@@ -16,6 +17,7 @@ const routes: Routes = [
   {path: 'ingredientes', component: IngredientesComponent},
   {path: 'pedidos', component: PedidosComponent},
   {path: 'cocina', component: CocinaComponent},
+  {path: 'ordenes', component: OrdenesComponent},
   {path: 'compras', component: ComprasComponent},
   {path: 'ventas', component: VentasComponent},
   {path: 'ventasproductos', component: VentasproductosComponent},
