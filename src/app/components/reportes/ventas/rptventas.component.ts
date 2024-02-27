@@ -4,11 +4,11 @@ import { OrdenesService } from 'src/app/services/ordenes.service';
 import * as FileSaver from 'file-saver';
 
 @Component({
-  selector: 'app-ventas',
-  templateUrl: './ventas.component.html',
-  styleUrls: ['./ventas.component.css']
+  selector: 'app-rpt-ventas',
+  templateUrl: './rptventas.component.html',
+  styleUrls: ['./rptventas.component.css']
 })
-export class VentasComponent {
+export class RptVentasComponent {
   [x: string]: any;
 
   d1 = new Date();

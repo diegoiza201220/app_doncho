@@ -17,7 +17,6 @@
         <div class="flex">
             <span class="p-input-icon-left ml-auto">
                 <i class="pi pi-search"></i>
-                <!-- <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" /> -->
                 <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains', dt)" placeholder="Search keyword" />
             </span>
         </div>
@@ -31,14 +30,6 @@
             <th>Tipo de pago</th>
             <th>Documento de pago</th>
         </tr>
-        <!-- <tr>
-            <th></th>
-            <th><p-columnFilter type="text" field="cliente"></p-columnFilter></th>
-            <th><p-columnFilter type="text" field="secuencial"></p-columnFilter></th>
-            <th></th>
-            <th></th>
-            <th></th>
-        </tr> -->
     </ng-template>
     <ng-template pTemplate="body" let-registro>
         <tr [pSelectableRow]="registro">

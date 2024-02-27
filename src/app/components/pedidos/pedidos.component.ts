@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Renderer2 } from '@angular/core';
 import Producto from 'src/app/interfaces/productos.interface';
 import { ProductosService } from 'src/app/services/productos.service';
 import { MessageService, ConfirmationService } from 'primeng/api';
@@ -49,7 +49,8 @@ export class PedidosComponent {
     private secuenciaService: SecuenciaService,
     private ordenesService: OrdenesService,
     private ordenesCocinaService: OrdenescocinaService,
-    private router: Router
+    private router: Router,
+    private renderer: Renderer2
   ) {
   }
 
@@ -57,6 +58,7 @@ export class PedidosComponent {
     this.getProductosObserver();
     this.getSecuenciaObserver();
     //this.fillGrupoProducto();
+    
   }
 
   getProductosObserver(): void {
@@ -79,23 +81,23 @@ export class PedidosComponent {
     this.lproductos.forEach(element => {
       element.badge = '0';
       switch (element.grupo) {
-        case 'choclo': {
+        case 'CHOCLO': {
           this.lproductoschoclo.push(element);
           break;
         }
-        case "chocho": {
+        case "CHOCHO": {
           this.lproductoschocho.push(element);
           break;
         }
-        case "porciones": {
+        case "PORCIONES": {
           this.lproductosporciones.push(element);
           break;
         }
-        case "bebidas": {
+        case "BEBIDAS": {
           this.lproductosbebidas.push(element);
           break;
         }
-        case "otros": {
+        case "OTROS": {
           this.lproductosotros.push(element);
           break;
         }
@@ -108,28 +110,30 @@ export class PedidosComponent {
     this.lproductosbebidas.sort((a, b) => (a.ordenaparicion > b.ordenaparicion ? -1 : 1));
     this.lproductosotros.sort((a, b) => (a.ordenaparicion > b.ordenaparicion ? -1 : 1));
     console.log(this.mostrarCargar);
+    //debugger
+    
   }
 
 
   onClickProducto(_producto: Producto, operacion: string) {
     switch (_producto.grupo) {
-      case 'choclo': {
+      case 'CHOCLO': {
         this.procesarAccion(this.lproductoschoclo, operacion, _producto);
         break;
       }
-      case "chocho": {
+      case "CHOCHO": {
         this.procesarAccion(this.lproductoschocho, operacion, _producto);
         break;
       }
-      case "porciones": {
+      case "PORCIONES": {
         this.procesarAccion(this.lproductosporciones, operacion, _producto);
         break;
       }
-      case "bebidas": {
+      case "BEBIDAS": {
         this.procesarAccion(this.lproductosbebidas, operacion, _producto);
         break;
       }
-      case "otros": {
+      case "OTROS": {
         this.procesarAccion(this.lproductosotros, operacion, _producto);
         break;
       }

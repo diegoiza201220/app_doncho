@@ -3,6 +3,7 @@ import { Firestore, collection, addDoc, collectionData, doc, deleteDoc, updateDo
 import Ingrediente from '../interfaces/ingrediente.interface';
 import { Observable } from 'rxjs';
 
+
 @Injectable({
   providedIn: 'root'
 })

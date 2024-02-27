@@ -3,12 +3,12 @@ import Orden from 'src/app/interfaces/orden.interface';
 import { OrdenesService } from 'src/app/services/ordenes.service';
 
 @Component({
-  selector: 'app-ventasproductos',
-  templateUrl: './ventasproductos.component.html',
-  styleUrls: ['./ventasproductos.component.css']
+  selector: 'app-rpt-ventasproductos',
+  templateUrl: './rptventasproductos.component.html',
+  styleUrls: ['./rptventasproductos.component.css']
 })
 
-export class VentasproductosComponent {
+export class RptVentasproductosComponent {
 
   d1 = new Date();
   d2 = new Date();

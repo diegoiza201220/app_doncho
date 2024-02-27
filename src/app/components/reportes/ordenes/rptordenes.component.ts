@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import Orden from 'src/app/interfaces/orden.interface';
 import { OrdenesService } from 'src/app/services/ordenes.service';
-import { Table } from 'primeng/table'
+
 
 @Component({
-  selector: 'app-ordenes',
-  templateUrl: './ordenes.component.html',
-  styleUrls: ['./ordenes.component.css']
+  selector: 'app-rpt-ordenes',
+  templateUrl: './rptordenes.component.html',
+  styleUrls: ['./rptordenes.component.css']
 })
-export class OrdenesComponent {
+export class RptOrdenesComponent {
   constructor(private ordenesService: OrdenesService) {
   }
 
@@ -56,7 +56,7 @@ export class OrdenesComponent {
   }
 
   applyFilterGlobal($event: any, stringVal: any, dt: any) {
-    dt!.filterGlobal(($event.target as HTMLInputElement).value, 'contains');
+    dt.filterGlobal(($event.target as HTMLInputElement).value, 'contains');
  }
   
 }

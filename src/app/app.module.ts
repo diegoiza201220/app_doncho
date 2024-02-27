@@ -29,13 +29,13 @@ import { TabViewModule } from 'primeng/tabview';
 import { DropdownModule } from 'primeng/dropdown';
 import { SplitterModule } from 'primeng/splitter';
 import { LoginComponent } from './components/login/login.component';
-import { ComprasComponent } from './components/reportes/compras/compras.component';
-import { VentasComponent } from './components/reportes/ventas/ventas.component';
+import { RptComprasComponent } from './components/reportes/compras/rptcompras.component';
+import { RptVentasComponent } from './components/reportes/ventas/rptventas.component';
 import { CalendarModule } from 'primeng/calendar';
-import { VentasproductosComponent } from './components/reportes/ventasproductos/ventasproductos.component';
+import { RptVentasproductosComponent } from './components/reportes/ventasproductos/rptventasproductos.component';
 import { ChartModule } from 'primeng/chart';
 import { IngredientesComponent } from './components/ingredientes/ingredientes.component';
-import { OrdenesComponent } from './components/reportes/ordenes/ordenes.component';
+import { RptOrdenesComponent } from './components/reportes/ordenes/rptordenes.component';
 
 @NgModule({
   declarations: [
@@ -46,11 +46,11 @@ import { OrdenesComponent } from './components/reportes/ordenes/ordenes.componen
     PedidosComponent,
     CocinaComponent,
     LoginComponent,
-    ComprasComponent,
-    VentasComponent,
-    VentasproductosComponent,
+    RptComprasComponent,
+    RptVentasComponent,
+    RptVentasproductosComponent,
     IngredientesComponent,
-    OrdenesComponent, 
+    RptOrdenesComponent, 
   ],
   imports: [
     BrowserModule,
