@@ -33,7 +33,7 @@
     </ng-template>
     <ng-template pTemplate="body" let-registro>
         <tr [pSelectableRow]="registro">
-            <td>{{ registro.fecha | date: 'yyyy/MM/dd hh:mm:ss'}}</td>
+            <td>{{ registro.fecha?.toDate() | date: 'medium'}}</td>
             <td>{{ registro.secuencial }}</td>
             <td>{{ registro.cliente }}</td>
             <td>{{ registro.totalorden | currency:'USD' }}</td>

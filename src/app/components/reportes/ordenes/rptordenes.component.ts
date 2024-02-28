@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import Orden from 'src/app/interfaces/orden.interface';
 import { OrdenesService } from 'src/app/services/ordenes.service';
+import { BaseComponent } from 'src/app/util/base.component';
 
 
 @Component({
@@ -8,8 +9,9 @@ import { OrdenesService } from 'src/app/services/ordenes.service';
   templateUrl: './rptordenes.component.html',
   styleUrls: ['./rptordenes.component.css']
 })
-export class RptOrdenesComponent {
+export class RptOrdenesComponent extends BaseComponent {
   constructor(private ordenesService: OrdenesService) {
+    super();
   }
 
   [x: string]: any;
@@ -22,12 +24,11 @@ export class RptOrdenesComponent {
 
   ngOnInit(): void {
     let d = new Date();
-    d.setHours(d.getHours() - 5);
     this.d1 = this.d2 = d;
   }
 
   Buscar() {
-    this.ordenesService.queryOrdenesPorFecha(this.d1, this.d2).then(resp => {
+    this.ordenesService.queryOrdenesPorFecha(this.fechaToInteger(this.d1), this.fechaToInteger(this.d2)).then(resp => {
       this.lregistros = resp;
     });
   }

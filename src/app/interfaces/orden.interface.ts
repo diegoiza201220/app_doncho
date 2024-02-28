@@ -1,6 +1,7 @@
 export default interface Orden {
     id?: string;
     fecha: Date;
+    particion: number;
     secuencial: number;
     cliente: string;
     ruc: string;

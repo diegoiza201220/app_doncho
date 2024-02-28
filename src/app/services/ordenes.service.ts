@@ -14,10 +14,10 @@ export class OrdenesService {
     return addDoc(ordenRef, orden);
   }
 
-  async queryOrdenesPorFecha(d1: Date, d2: Date ): Promise<Orden[]> {
+  async queryOrdenesPorFecha(d1: number, d2: number ): Promise<Orden[]> {
     const q = query(collection(this.firestore, "ordenes"), 
-              where("fecha", ">=", d1.toISOString()),
-              where("fecha", "<=", d2.toISOString()));
+              where("fechainteger", ">=", d1),
+              where("fechainteger", "<=", d2));
     const querySnapshot = await getDocs(q);
     let ordenes: any = [];
     querySnapshot.forEach((doc) => {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, collectionData, doc, deleteDoc, updateDoc, query, where, getDocs } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, doc, updateDoc } from '@angular/fire/firestore';
 import Secuencia from '../interfaces/secuencia.interface';
 import { Observable } from 'rxjs';
 

@@ -2,13 +2,14 @@ import { Component } from '@angular/core';
 import Orden from 'src/app/interfaces/orden.interface';
 import { OrdenesService } from 'src/app/services/ordenes.service';
 import * as FileSaver from 'file-saver';
+import { BaseComponent } from 'src/app/util/base.component';
 
 @Component({
   selector: 'app-rpt-ventas',
   templateUrl: './rptventas.component.html',
   styleUrls: ['./rptventas.component.css']
 })
-export class RptVentasComponent {
+export class RptVentasComponent extends BaseComponent {
   [x: string]: any;
 
   d1 = new Date();
@@ -16,18 +17,18 @@ export class RptVentasComponent {
   lregistros!: Orden[];
 
   constructor(private ordenesService: OrdenesService) {
+    super();
   }
 
   ngOnInit(): void {
     let d = new Date();
-    d.setHours(d.getHours() - 5);
     this.d1 = this.d2 = d;
   }
 
 
   Buscar() {
 
-    this.ordenesService.queryOrdenesPorFecha(this.d1, this.d2).then(resp => {
+    this.ordenesService.queryOrdenesPorFecha(this.fechaToInteger(this.d1), this.fechaToInteger(this.d2)).then(resp => {
       this.lregistros = resp;
     });
 

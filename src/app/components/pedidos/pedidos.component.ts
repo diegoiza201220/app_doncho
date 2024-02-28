@@ -1,4 +1,4 @@
-import { Component, Renderer2 } from '@angular/core';
+import { Component } from '@angular/core';
 import Producto from 'src/app/interfaces/productos.interface';
 import { ProductosService } from 'src/app/services/productos.service';
 import { MessageService, ConfirmationService } from 'primeng/api';
@@ -10,14 +10,16 @@ import { OrdenesService } from 'src/app/services/ordenes.service';
 import { Router, RouterLink } from '@angular/router';
 import { OrdenescocinaService } from 'src/app/services/ordenescocina.service';
 import Secuencia from 'src/app/interfaces/secuencia.interface';
+import { BaseComponent } from 'src/app/util/base.component';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-pedidos',
   templateUrl: './pedidos.component.html',
   styleUrls: ['./pedidos.component.css'],
-  providers: [MessageService, ConfirmationService]
+  providers: [MessageService, ConfirmationService, DatePipe]
 })
-export class PedidosComponent {
+export class PedidosComponent extends BaseComponent {
   lproductos: any[] = [];
   lproductoschoclo: any[] = [];
   lproductoschocho: any[] = [];
@@ -25,7 +27,7 @@ export class PedidosComponent {
   lproductosbebidas: any[] = [];
   lproductosotros: any[] = [];
 
-  lsecuencia: Secuencia[] = [{secuencia:0,id:''}];
+  lsecuencia: Secuencia[] = [{secuencia:0,id:'', fecha:0}];
   pedido: any = {};
   lordencocina: any[] = [];
   mostrarCargar: boolean = true;
@@ -41,7 +43,8 @@ export class PedidosComponent {
 
   loading: boolean = false;
 
-  fecha: Date = new Date();
+  //fecha: Date = new Date();
+  fechainteger: number =0;
 
   constructor(private productosService: ProductosService,
     private messageService: MessageService,
@@ -50,15 +53,14 @@ export class PedidosComponent {
     private ordenesService: OrdenesService,
     private ordenesCocinaService: OrdenescocinaService,
     private router: Router,
-    private renderer: Renderer2
+    private datePipe: DatePipe
   ) {
+    super();
   }
 
   ngOnInit(): void {
     this.getProductosObserver();
     this.getSecuenciaObserver();
-    //this.fillGrupoProducto();
-    
   }
 
   getProductosObserver(): void {
@@ -69,7 +71,15 @@ export class PedidosComponent {
 
   getSecuenciaObserver(): void {
     this.secuenciaService.getSecuenciaObservable().subscribe(secuencia => {
+      debugger;
+      let d = new Date();
+      this.fechainteger = this.fechaToInteger(d);
       this.lsecuencia = secuencia;
+      if (this.lsecuencia[0].fecha !== this.fechainteger){
+        this.lsecuencia[0].fecha = this.fechainteger;
+        this.lsecuencia[0].secuencia = 1;
+      }
+      
     })
   }
 
@@ -146,20 +156,11 @@ export class PedidosComponent {
         this.cargarDetalleOrden();
         break;
       }
-
     }
   }
 
   cargarDetalleOrden() {
-    // this.orden.productos.forEach(element => {
-    //   this.orden.productos.pop();
-    // })
     this.pedido.productos = [];
-    //console.log(this.pedido);
-
-    //this.orden.productos.length = 1;
-    //console.log(this.orden.productos.length);
-
     this.calcularDetalles(this.lproductoschocho.filter(x => x.badge > 0));
     this.calcularDetalles(this.lproductoschoclo.filter(x => x.badge > 0));
     this.calcularDetalles(this.lproductosporciones.filter(x => x.badge > 0));
@@ -169,9 +170,6 @@ export class PedidosComponent {
   }
 
   calcularDetalles(lista: any[]) {
-    //this.orden: Orden {};
-    //this.pedido.productos = [];
-    console.log(this.pedido);
     lista.forEach(element => {
       this.pedido.productos.push(
         {
@@ -198,16 +196,13 @@ export class PedidosComponent {
     this.loading = true;
 
     setTimeout(() => {
-      var d = new Date();
-      d.setHours(d.getHours() - 5);
-      var dt = d.toISOString(); 
+      let d = new Date();
       this.pedido.secuencial = this.lsecuencia[0].secuencia;
       this.pedido.tipodepago = this.selectedFP?.name ? 'EF' : 'TC/TD';
-      this.pedido.fecha = dt;
-      //this.orden.productos = this.orden.productos.filter(n=>n);
-      //console.log(this.pedido);
+      this.pedido.fecha = d;
+      this.pedido.fechainteger = this.fechainteger;
       this.pedido.productos.forEach((element: { plato: any; cantidad: any; pedidoacocina: any; }) => {
-        if (Boolean(element.pedidoacocina)) {
+        if (element.pedidoacocina) {
           this.lordencocina.push({
             secuencialorden: this.lsecuencia[0].secuencia,
             producto: element.plato,
@@ -221,7 +216,6 @@ export class PedidosComponent {
       });
       this.ordenesService.addOrden(this.pedido);
       this.lsecuencia[0].secuencia++;
-      //console.log(this.lsecuencia[0]);
       this.secuenciaService.updateSecuencia(this.lsecuencia[0]);
       this.lordencocina.forEach(element => {
         console.log(element);

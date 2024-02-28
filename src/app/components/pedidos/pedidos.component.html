@@ -165,6 +165,13 @@
                 </div>
             </div>
             <div class="form-group row">
+                <label for="email" class="col-sm-2 col-form-label">Email:</label>
+                <div class="col-sm-6">
+                    <input type="text" id="email" class="form-control" [(ngModel)]="pedido.email"
+                        aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+            </div>
+            <div class="form-group row">
                 <label for="direccion" class="col-sm-2 col-form-label">Dirección:</label>
                 <div class="col-sm-10">
                     <input type="text" id="direccion" class="form-control" [(ngModel)]="pedido.direccion"
