@@ -1,18 +1,18 @@
-<div class="card" style="background-color: #ffe393;">
-    <p-tabView (onChange)="onChangeTab($event)">
+<div class="card" style="background-color: white;">
+    <p-tabView (onChange)="onChangeTab($event)" [activeIndex]="activeTabId">
         <p-tabPanel header="Selección de platos">
-            <div style="background-color: #ffe393;align-items: center;">
+            <div style="background-color: white;align-items: center;">
                 <span>
                     <p-button (onClick)="fillGrupoProducto();" *ngIf="this.mostrarCargar">click para cargar productos!
                     </p-button>
                     <H5>ORDEN NUMERO: {{ lsecuencia[0].secuencia }}</H5>
                 </span>
             </div>
-            <div class="row" style="background-color: #ffe393;">
+            <div class="row" style="background-color: white;">
                 <H6>CHOCLO</H6>
 
                 <div class="col-sm d-grid" *ngFor="let producto of lproductoschoclo">
-                    <p-button styleClass="btn btn-primary btn-sm btn-choclo" (onClick)="onClickProducto(producto, '+')">
+                    <p-button styleClass="btn btn-sm btn-choclo" (onClick)="onClickProducto(producto, '+')">
                         {{producto.nombre}} <br />
                         ${{producto.valor}} <span
                             [ngClass]="producto.badge == 0 ? 'badge text-bg-secondary' : 'badge rounded-pill text-bg-success'">{{producto.badge}}</span>
@@ -22,11 +22,11 @@
                         (onClick)="onClickProducto(producto,'-')">x</p-button>
                 </div>
             </div>
-            <div class="row" style="background-color: #ffe393;">
+            <div class="row" style="background-color: white;">
 
                 <h6>CHOCHO</h6>
                 <div class="col-sm d-grid" *ngFor="let producto of lproductoschocho">
-                    <p-button styleClass="btn btn-primary btn-sm btn-chocho" (onClick)="onClickProducto(producto,'+')">
+                    <p-button styleClass="btn btn-sm btn-chocho" (onClick)="onClickProducto(producto,'+')">
                         {{producto.nombre}} <br />
                         ${{producto.valor}} <span
                             [ngClass]="producto.badge == 0 ? 'badge text-bg-secondary' : 'badge rounded-pill text-bg-success'">{{producto.badge}}</span>
@@ -35,14 +35,13 @@
                         (onClick)="onClickProducto(producto,'-')">x</p-button>
                 </div>
             </div>
-            <div class="row" style="background-color: #ffe393;">
+            <div class="row" style="background-color: white;">
 
                 <h6>PORCIONES</h6>
 
 
                 <div class="col-sm d-grid" *ngFor="let producto of lproductosporciones">
-                    <p-button styleClass="btn btn-primary btn-sm btn-porciones"
-                        (onClick)="onClickProducto(producto,'+')">
+                    <p-button styleClass="btn btn-sm btn-porciones" (onClick)="onClickProducto(producto,'+')">
                         {{producto.nombre}} <br />
                         ${{producto.valor}} <span
                             [ngClass]="producto.badge == 0 ? 'badge text-bg-secondary' : 'badge rounded-pill text-bg-success'">{{producto.badge}}</span>
@@ -52,11 +51,11 @@
 
                 </div>
             </div>
-            <div class="row" style="background-color: #ffe393;">
+            <div class="row" style="background-color: white;">
 
                 <h6>BEBIDAS</h6>
                 <div class="col-sm d-grid" *ngFor="let producto of lproductosbebidas">
-                    <p-button styleClass="btn btn-primary btn-sm btn-bebidas" (onClick)="onClickProducto(producto,'+')">
+                    <p-button styleClass="btn btn-sm btn-bebidas" (onClick)="onClickProducto(producto,'+')">
                         {{producto.nombre}} <br />
                         ${{producto.valor}} <span
                             [ngClass]="producto.badge == 0 ? 'badge text-bg-secondary' : 'badge rounded-pill text-bg-success'">{{producto.badge}}</span>
@@ -66,11 +65,11 @@
 
                 </div>
             </div>
-            <div class="row" style="background-color: #ffe393;">
+            <div class="row" style="background-color: white;">
 
                 <h6>OTROS</h6>
                 <div class="col-sm d-grid" *ngFor="let producto of lproductosotros">
-                    <p-button styleClass="btn btn-primary btn-sm btn-otros" (onClick)="onClickProducto(producto,'+')">
+                    <p-button styleClass="btn btn-sm btn-otros" (onClick)="onClickProducto(producto,'+')">
                         {{producto.nombre}} <br />
                         ${{producto.valor}} <span
                             [ngClass]="producto.badge == 0 ? 'badge text-bg-secondary' : 'badge rounded-pill text-bg-success'">{{producto.badge}}</span>
@@ -78,6 +77,11 @@
                     <p-button icon="pi pi-times" styleClass="p-button-danger"
                         (onClick)="onClickProducto(producto,'-')">x</p-button>
                 </div>
+            </div>
+
+            <div>
+                <p-button (onClick)="continueToResumen();">click para continuar a resumen de orden
+                </p-button>
             </div>
         </p-tabPanel>
         <p-tabPanel header="Resumen de orden">
@@ -111,34 +115,55 @@
                 </ng-template>
             </p-table>
             <div class="form-group row">
-                <label for="formasdepago" class="col-sm-3 col-form-label">Forma de pago</label>
-                <div class="col-sm-8">
-                    <p-dropdown id="formasdepago" [options]="formasdepago" [(ngModel)]="selectedFP"
-                        placeholder="Seleccione una forma de pago" optionLabel="name"></p-dropdown>
+                <label for="formasdepago" class="col-sm-2 col-form-label">Forma de pago</label>
+                <div class="col-sm-2">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="formasdepago" id="exampleRadios1" value="EF"
+                            [(ngModel)]="selectedFP" checked>
+                        <label class="form-check-label" for="exampleRadios1">
+                            Efectivo
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="formasdepago" id="exampleRadios2" value="TR"
+                            [(ngModel)]="selectedFP">
+                        <label class="form-check-label" for="exampleRadios2">
+                            Transferencia
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="formasdepago" id="exampleRadios3" value="DU"
+                            [(ngModel)]="selectedFP">
+                        <label class="form-check-label" for="exampleRadios3">
+                            De Una
+                        </label>
+                    </div>
                 </div>
             </div>
 
-            <div class="form-group row">
-                <label for="voucher" class="col-sm-3 col-form-label">Número de voucher/transferencia:</label>
-                <div class="col-sm-4">
-                    <input type="text" id="voucher" class="form-control" [(ngModel)]="pedido.documentopago"
-                        aria-label="Username" aria-describedby="basic-addon1">
-                </div>
-            </div>
+
+
 
             <div class="form-group row">
                 <label for="pago" class="col-sm-2 col-form-label">Pago:</label>
                 <div class="col-sm-2">
-                    <input matInput onfocus="this.select()" type="text" id="pago" class="form-control" placeholder="Pago" [(ngModel)]="pago"
-                        aria-label="Username" aria-describedby="basic-addon1" (blur)="onBlurPago()" >
+                    <input matInput onfocus="this.select()" type="text" id="pago" class="form-control"
+                        placeholder="Pago" [(ngModel)]="pago" aria-label="Username" aria-describedby="basic-addon1"
+                        (blur)="onBlurPago()">
                 </div>
             </div>
 
             <div class="form-group row">
                 <label for="cambio" class="col-sm-2 col-form-label">Cambio:</label>
                 <div class="col-sm-2 text-cambio">{{cambio | currency:'USD':true: '1.0-2'}}
-                    <!-- <input type="text" id="cambio" class="form-control" [(ngModel)]="cambio" aria-label="Username"
-                        aria-describedby="basic-addon1" [disabled]="true" > -->
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="voucher" class="col-sm-2 col-form-label">Número de voucher/transferencia:</label>
+                <div class="col-sm-2">
+                    <input type="text" id="voucher" class="form-control" [(ngModel)]="pedido.documentopago"
+                        aria-label="Username" aria-describedby="basic-addon1">
                 </div>
             </div>
 
@@ -167,8 +192,8 @@
             <div class="form-group row">
                 <label for="email" class="col-sm-2 col-form-label">Email:</label>
                 <div class="col-sm-6">
-                    <input type="text" id="email" class="form-control" [(ngModel)]="pedido.email"
-                        aria-label="Username" aria-describedby="basic-addon1">
+                    <input type="text" id="email" class="form-control" [(ngModel)]="pedido.email" aria-label="Username"
+                        aria-describedby="basic-addon1">
                 </div>
             </div>
             <div class="form-group row">

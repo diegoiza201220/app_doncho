@@ -3,15 +3,12 @@ import Producto from 'src/app/interfaces/productos.interface';
 import { ProductosService } from 'src/app/services/productos.service';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { SecuenciaService } from 'src/app/services/secuencia.service';
-// import Secuencia from 'src/app/interfaces/secuencia.interface';
-// import Orden from 'src/app/interfaces/orden.interface';
-import Formadepago from 'src/app/interfaces/formadepago.interface';
 import { OrdenesService } from 'src/app/services/ordenes.service';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { OrdenescocinaService } from 'src/app/services/ordenescocina.service';
 import Secuencia from 'src/app/interfaces/secuencia.interface';
 import { BaseComponent } from 'src/app/util/base.component';
-import {DatePipe} from '@angular/common';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-pedidos',
@@ -27,24 +24,17 @@ export class PedidosComponent extends BaseComponent {
   lproductosbebidas: any[] = [];
   lproductosotros: any[] = [];
 
-  lsecuencia: Secuencia[] = [{secuencia:0,id:'', fecha:0}];
+  lsecuencia: Secuencia[] = [{ secuencia: 0, id: '', fecha: 0 }];
   pedido: any = {};
   lordencocina: any[] = [];
   mostrarCargar: boolean = true;
-
-  formasdepago: Formadepago[] = [{ name: 'Tarjeta crédito/débito', code: 'TC/TD' },
-  { name: 'Transferencia', code: 'TR' },
-  { name: 'Efectivo', code: 'EF' }];
-
-  selectedFP: Formadepago | undefined;
+  selectedFP: string = "EF";
 
   pago: number = 0;
   cambio: number = 0;
-
   loading: boolean = false;
-
-  //fecha: Date = new Date();
-  fechainteger: number =0;
+  fechainteger: number = 0;
+  activeTabId: number = 0;
 
   constructor(private productosService: ProductosService,
     private messageService: MessageService,
@@ -71,20 +61,18 @@ export class PedidosComponent extends BaseComponent {
 
   getSecuenciaObserver(): void {
     this.secuenciaService.getSecuenciaObservable().subscribe(secuencia => {
-      debugger;
       let d = new Date();
       this.fechainteger = this.fechaToInteger(d);
       this.lsecuencia = secuencia;
-      if (this.lsecuencia[0].fecha !== this.fechainteger){
+      if (this.lsecuencia[0].fecha !== this.fechainteger) {
         this.lsecuencia[0].fecha = this.fechainteger;
         this.lsecuencia[0].secuencia = 1;
       }
-      
     })
   }
 
   fillGrupoProducto() {
-    if (!this.mostrarCargar){
+    if (!this.mostrarCargar) {
       return;
     }
 
@@ -113,15 +101,13 @@ export class PedidosComponent extends BaseComponent {
         }
       }
     });
-    this.mostrarCargar=false;
-    this.lproductoschoclo.sort((a, b) => (a.ordenaparicion > b.ordenaparicion ? -1 : 1));
-    this.lproductoschocho.sort((a, b) => (a.ordenaparicion > b.ordenaparicion ? -1 : 1));
-    this.lproductosporciones.sort((a, b) => (a.ordenaparicion > b.ordenaparicion ? -1 : 1));
-    this.lproductosbebidas.sort((a, b) => (a.ordenaparicion > b.ordenaparicion ? -1 : 1));
-    this.lproductosotros.sort((a, b) => (a.ordenaparicion > b.ordenaparicion ? -1 : 1));
+    this.mostrarCargar = false;
+    this.lproductoschoclo.sort((a, b) => (Number(a.ordenaparicion) < Number(b.ordenaparicion) ? -1 : 1));
+    this.lproductoschocho.sort((a, b) => (Number(a.ordenaparicion) < Number(b.ordenaparicion) ? -1 : 1));
+    this.lproductosporciones.sort((a, b) => (Number(a.ordenaparicion) < Number(b.ordenaparicion) ? -1 : 1));
+    this.lproductosbebidas.sort((a, b) => (Number(a.ordenaparicion) < Number(b.ordenaparicion) ? -1 : 1));
+    this.lproductosotros.sort((a, b) => (Number(a.ordenaparicion) < Number(b.ordenaparicion) ? -1 : 1));
     console.log(this.mostrarCargar);
-    //debugger
-    
   }
 
 
@@ -151,6 +137,8 @@ export class PedidosComponent extends BaseComponent {
   }
 
   onChangeTab(event: any) {
+    debugger;
+    this.activeTabId = event.index;
     switch (event.index) {
       case 1: {
         this.cargarDetalleOrden();
@@ -159,6 +147,11 @@ export class PedidosComponent extends BaseComponent {
     }
   }
 
+  continueToResumen() {
+    debugger;
+    this.activeTabId = 1;
+    this.cargarDetalleOrden();
+  }
   cargarDetalleOrden() {
     this.pedido.productos = [];
     this.calcularDetalles(this.lproductoschocho.filter(x => x.badge > 0));
@@ -198,7 +191,7 @@ export class PedidosComponent extends BaseComponent {
     setTimeout(() => {
       let d = new Date();
       this.pedido.secuencial = this.lsecuencia[0].secuencia;
-      this.pedido.tipodepago = this.selectedFP?.name ? 'EF' : 'TC/TD';
+      this.pedido.tipodepago = this.selectedFP;
       this.pedido.fecha = d;
       this.pedido.fechainteger = this.fechainteger;
       this.pedido.productos.forEach((element: { plato: any; cantidad: any; pedidoacocina: any; }) => {
@@ -208,7 +201,7 @@ export class PedidosComponent extends BaseComponent {
             producto: element.plato,
             cantidad: element.cantidad,
             recibido: false,
-            procesado: false, 
+            procesado: false,
             entregado: false,
             observacion: ''
           })
@@ -222,7 +215,10 @@ export class PedidosComponent extends BaseComponent {
         this.ordenesCocinaService.addOrdencocina(element);
       });
       this.loading = false;
-      this.router.navigateByUrl('main');
+      //this.router.navigateByUrl('pedidos');
+      this.router.navigate(['pedidos']).then(() => {
+        window.location.reload();
+      });
     }, 1000);
   }
 }

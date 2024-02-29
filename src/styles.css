@@ -55,26 +55,36 @@ button {
 .btn-choclo{
     background-color: rgb(199, 251, 137)!important;
     color: black!important;
+    font-size:larger;
+    line-height: 1.2rem;
 }
 
 .btn-chocho{
     background-color: rgb(255, 216, 143)!important;
     color: black!important;
+    font-size:larger;
+    line-height: 1.2rem;
 }
 
 .btn-porciones{
     background-color: rgb(255, 255, 204)!important;
     color: black!important;
+    font-size:larger;
+    line-height: 1.2rem;
 }
 
 .btn-bebidas{
     background-color: rgb(189, 215, 238)!important;
     color: black!important;
+    font-size:larger;
+    line-height: 1.2rem;
 }
 
 .btn-otros{
     background-color: rgb(216, 213, 211)!important;
     color: black!important;
+    font-size:larger;
+    line-height: 1.2rem;
 }
 
 .text-cambio{

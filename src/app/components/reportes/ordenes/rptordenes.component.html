@@ -23,9 +23,9 @@
     </ng-template>
     <ng-template pTemplate="header">
         <tr>
-            <th>Fecha</th>
-            <th>Orden No.</th>
-            <th>Cliente</th>
+            <th pSortableColumn="fecha">Fecha<p-sortIcon field="fecha"></p-sortIcon></th>
+            <th pSortableColumn="secuencial">Orden No.<p-sortIcon field="secuencial"></p-sortIcon></th>
+            <th pSortableColumn="cliente">Cliente<p-sortIcon field="secuencial"></p-sortIcon></th>
             <th>Valor</th>
             <th>Tipo de pago</th>
             <th>Documento de pago</th>
