@@ -101,8 +101,8 @@
                     <tr>
                         <td>{{ producto.cantidad }}</td>
                         <td>{{ producto.plato }}</td>
-                        <td>{{ producto.preciounitario | currency:'USD'}}</td>
-                        <td>{{ producto.preciototal | currency:'USD'}}</td>
+                        <td>{{ producto.preciounitario | currency:'USD':'symbol'}}</td>
+                        <td>{{ producto.preciototal | currency:'USD':'symbol'}}</td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="summary">
@@ -110,7 +110,7 @@
                         <td></td>
                         <td></td>
                         <td>Total a cancelar</td>
-                        <td style="color: red; font-size: xx-large;">{{ pedido.totalorden | currency:'USD' }}</td>
+                        <td style="color: red; font-size: xx-large;">{{ pedido.totalorden | currency:'USD':'symbol' }}</td>
                     </tr>
                 </ng-template>
             </p-table>
@@ -155,7 +155,8 @@
 
             <div class="form-group row">
                 <label for="cambio" class="col-sm-2 col-form-label">Cambio:</label>
-                <div class="col-sm-2 text-cambio">{{cambio | currency:'USD':true: '1.0-2'}}
+                <!-- <div class="col-sm-2 text-cambio">{{cambio | currency:'USD':true: '1.0-2'}} -->
+                    <div class="col-sm-2 text-cambio">{{cambio | currency:'USD':'symbol'}}
                 </div>
             </div>
 
