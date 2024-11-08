@@ -49,8 +49,27 @@ export class PedidosComponent extends BaseComponent {
   }
 
   ngOnInit(): void {
-    this.getProductosObserver();
-    this.getSecuenciaObserver();
+    this.pedido = {};
+    this.getProductosPromise();
+    this.getSecuenciaPromise();
+  }
+
+  getProductosPromise(): void{
+    this.productosService.getProductosPromise().then( productos => {
+      this.lproductos = productos;
+    })
+  }
+
+  getSecuenciaPromise(): void{
+    this.secuenciaService.getSecuenciaPromise().then( secuencia => {
+      this.lsecuencia = secuencia;
+      let d = new Date();
+      this.fechainteger = this.fechaToInteger(d);
+      if (this.lsecuencia[0].fecha !== this.fechainteger) {
+        this.lsecuencia[0].fecha = this.fechainteger;
+        this.lsecuencia[0].secuencia = 1;
+      }
+    })
   }
 
   getProductosObserver(): void {
@@ -137,7 +156,7 @@ export class PedidosComponent extends BaseComponent {
   }
 
   onChangeTab(event: any) {
-    debugger;
+    //debugger;
     this.activeTabId = event.index;
     switch (event.index) {
       case 1: {
@@ -148,7 +167,7 @@ export class PedidosComponent extends BaseComponent {
   }
 
   continueToResumen() {
-    debugger;
+    //debugger;
     this.activeTabId = 1;
     this.cargarDetalleOrden();
   }
@@ -187,7 +206,6 @@ export class PedidosComponent extends BaseComponent {
 
   grabarOrden() {
     this.loading = true;
-
     setTimeout(() => {
       let d = new Date();
       this.pedido.secuencial = this.lsecuencia[0].secuencia;
@@ -209,17 +227,21 @@ export class PedidosComponent extends BaseComponent {
       });
       this.ordenesService.addOrden(this.pedido);
       this.lsecuencia[0].secuencia++;
-      this.secuenciaService.updateSecuencia(this.lsecuencia[0]);
+      this.actualizarSecuencia();
       this.lordencocina.forEach(element => {
         console.log(element);
         this.ordenesCocinaService.addOrdencocina(element);
       });
       this.loading = false;
-      //this.router.navigateByUrl('pedidos');
-      this.router.navigate(['pedidos']).then(() => {
-        window.location.reload();
-      });
-    }, 1000);
+    }, 100);
+
+    this.router.navigateByUrl('main');
+      // this.router.navigate(['main']).then(() => {
+      //   window.location.reload();
+      // });
+  }
+
+  async actualizarSecuencia(){
+    const response = await this.secuenciaService.updateSecuencia(this.lsecuencia[0]);
   }
 }
-

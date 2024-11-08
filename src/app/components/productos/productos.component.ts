@@ -35,7 +35,8 @@ export class ProductosComponent {
   }
 
   ngOnInit(): void {
-    this.getProductosObserver();
+    //this.getProductosObserver();
+    this.getProductosPromise();
   }
 
   openNew() {
@@ -53,6 +54,7 @@ export class ProductosComponent {
     this.submitted = true;
     this.addProducto();
     this.messageService.add({ severity: 'success', summary: '¡Muy bien! ', detail: 'Producto creado' });
+    this.getProductosPromise();
     this.productoDialogo = false;
   }
 
@@ -63,6 +65,11 @@ export class ProductosComponent {
     })
   }
 
+  getProductosPromise(): void{
+    this.productosService.getProductosPromise().then( productos => {
+      this.lproductos = productos;
+    })
+  }
   async addProducto() {
     const response = await this.productosService.addProducto(this.producto);
     console.log(response);
@@ -85,6 +92,7 @@ export class ProductosComponent {
   onRowEditSave(producto: Producto) {
     this.updateProducto(producto);
     this.messageService.add({ severity: 'success', summary: '¡Muy bien! ', detail: 'Producto actualizado' });
+    this.getProductosPromise();
   }
 
   onRowEditCancel(producto: Producto, index: number) {
@@ -103,6 +111,7 @@ export class ProductosComponent {
           this.deleteProducto(element);
         });
         this.messageService.add({ severity: 'success', summary: '¡Muy bien!', detail: 'Productos han sido eliminados', life: 3000 });
+        this.getProductosPromise();
       }
     });
   }

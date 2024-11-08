@@ -1,5 +1,5 @@
 export default interface Secuencia{
-    id?: string;
+    id: string;
     secuencia: number;
     fecha: number;
 }
