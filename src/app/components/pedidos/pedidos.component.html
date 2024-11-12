@@ -1,9 +1,9 @@
-<div class="card" style="background-color: white;">
-    <p-tabView (onChange)="onChangeTab($event)" [activeIndex]="activeTabId">
+<div class="card" style="background-color: white;" (keydown.enter)="grabarOrden()">
+    <p-tabView (onChange)="onChangeTab($event)" [activeIndex]="activeTabId" styleClass="tabview-custom">
         <p-tabPanel header="Selección de platos">
             <div style="background-color: white;align-items: center;">
                 <span>
-                    <p-button (onClick)="fillGrupoProducto();" *ngIf="this.mostrarCargar">click para cargar productos!
+                    <p-button (onClick)="fillGrupoProducto();" *ngIf="this.mostrarCargar">Cargar productos!
                     </p-button>
                     <H5>ORDEN NUMERO: {{ lsecuencia[0].secuencia }}</H5>
                 </span>
@@ -33,6 +33,12 @@
                     </p-button>
                     <p-button icon="pi pi-times" styleClass="p-button-danger"
                         (onClick)="onClickProducto(producto,'-')">x</p-button>
+                </div>
+            </div>
+            <div class="row" style="background-color: white;">
+                <div class="item">
+                    <p-button (onClick)="continueToResumen();">Click para continuar
+                    </p-button>
                 </div>
             </div>
             <div class="row" style="background-color: white;">
@@ -78,11 +84,13 @@
                         (onClick)="onClickProducto(producto,'-')">x</p-button>
                 </div>
             </div>
-
-            <div>
-                <p-button (onClick)="continueToResumen();">click para continuar a resumen de orden
-                </p-button>
+            <div class="row" style="background-color: white;">
+                <div class="item">
+                    <p-button (onClick)="continueToResumen();">Click para continuar
+                    </p-button>
+                </div>
             </div>
+
         </p-tabPanel>
         <p-tabPanel header="Resumen de orden">
             <h1>ORDEN NUMERO: {{ lsecuencia[0].secuencia }}</h1>
@@ -109,54 +117,39 @@
                     <tr>
                         <td></td>
                         <td></td>
-                        <td>Total a cancelar</td>
-                        <td style="color: red; font-size: xx-large;">{{ pedido.totalorden | currency:'USD':'symbol' }}</td>
+                        <td></td>
+                        <td>Total a cancelar : <span class="tab"></span></td>
+                        <td style="color: red; font-size: xx-large;">{{ pedido.totalorden | currency:'USD':'symbol' }}
+                        </td>
                     </tr>
                 </ng-template>
             </p-table>
             <div class="form-group row">
                 <label for="formasdepago" class="col-sm-2 col-form-label">Forma de pago</label>
-                <div class="col-sm-2">
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="formasdepago" id="exampleRadios1" value="EF"
-                            [(ngModel)]="selectedFP" checked>
-                        <label class="form-check-label" for="exampleRadios1">
-                            Efectivo
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="formasdepago" id="exampleRadios2" value="TR"
-                            [(ngModel)]="selectedFP">
-                        <label class="form-check-label" for="exampleRadios2">
-                            Transferencia
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="formasdepago" id="exampleRadios3" value="DU"
-                            [(ngModel)]="selectedFP">
-                        <label class="form-check-label" for="exampleRadios3">
-                            De Una
-                        </label>
-                    </div>
+                <div class="col-sm-1">
+
+                    <input type="radio" class="btn-check" name="options-outlined" id="success-outlined" value="EF"
+                        autocomplete="off" [(ngModel)]="selectedFP" checked>
+                    <label class="btn btn-outline-success" for="success-outlined">Efectivo</label>
+
+                    <input type="radio" class="btn-check" name="options-outlined" id="success-outlined1" value="TR"
+                        autocomplete="off" [(ngModel)]="selectedFP">
+                    <label class="btn btn-outline-success" for="success-outlined1">Transferencia</label>
                 </div>
             </div>
 
-
-
-
-            <div class="form-group row">
-                <label for="pago" class="col-sm-2 col-form-label">Pago:</label>
+            <div class="form-group row" style="font-size: medium; ">
+                <label for="pago" class="col-sm-2 col-form-label" style="font-size:larger; font-weight: bolder;">Efectivo recibido:</label>
                 <div class="col-sm-2">
-                    <input matInput onfocus="this.select()" type="text" id="pago" class="form-control"
+                    <input matInput onfocus="this.select()" type="text" id="pago" class="form-control" style="color: navy;font-size:larger; "
                         placeholder="Pago" [(ngModel)]="pago" aria-label="Username" aria-describedby="basic-addon1"
                         (blur)="onBlurPago()">
                 </div>
             </div>
 
             <div class="form-group row">
-                <label for="cambio" class="col-sm-2 col-form-label">Cambio:</label>
-                <!-- <div class="col-sm-2 text-cambio">{{cambio | currency:'USD':true: '1.0-2'}} -->
-                    <div class="col-sm-2 text-cambio">{{cambio | currency:'USD':'symbol'}}
+                <label for="cambio" class="col-sm-2 col-form-label">Vuelto a entregar:</label>
+                <div class="col-sm-2 text-cambio blink_me">{{cambio | currency:'USD':'symbol'}}
                 </div>
             </div>
 
@@ -167,50 +160,58 @@
                         aria-label="Username" aria-describedby="basic-addon1">
                 </div>
             </div>
+            <p>
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    Datos Adicionales
+                </button>
+                <p-button label="Regresar" (onClick)="backToSeleccion()"></p-button>
+            </p>
+            <div class="collapse" id="collapseExample">
+                <div class="card card-body">
+                    <div class="form-group row">
+                        <label for="nombre" class="col-sm-2 col-form-label">Nombre</label>
+                        <div class="col-sm-6">
+                            <input type="text" id="nombre" class="form-control" [(ngModel)]="pedido.cliente"
+                                aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                    </div>
 
-            <div class="form-group row">
-                <label for="nombre" class="col-sm-2 col-form-label">Nombre</label>
-                <div class="col-sm-6">
-                    <input type="text" id="nombre" class="form-control" [(ngModel)]="pedido.cliente"
-                        aria-label="Username" aria-describedby="basic-addon1">
+                    <div class="form-group row">
+                        <label for="ruc" class="col-sm-2 col-form-label">Ruc:</label>
+                        <div class="col-sm-6">
+                            <input type="text" id="nombre" class="form-control" [(ngModel)]="pedido.ruc"
+                                aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="telefono" class="col-sm-2 col-form-label">Teléfono:</label>
+                        <div class="col-sm-6">
+                            <input type="text" id="telefono" class="form-control" [(ngModel)]="pedido.telefono"
+                                aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="email" class="col-sm-2 col-form-label">Email:</label>
+                        <div class="col-sm-6">
+                            <input type="text" id="email" class="form-control" [(ngModel)]="pedido.email"
+                                aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="direccion" class="col-sm-2 col-form-label">Dirección:</label>
+                        <div class="col-sm-10">
+                            <input type="text" id="direccion" class="form-control" [(ngModel)]="pedido.direccion"
+                                aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <div class="form-group row">
-                <label for="ruc" class="col-sm-2 col-form-label">Ruc:</label>
-                <div class="col-sm-6">
-                    <input type="text" id="nombre" class="form-control" [(ngModel)]="pedido.ruc" aria-label="Username"
-                        aria-describedby="basic-addon1">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="telefono" class="col-sm-2 col-form-label">Teléfono:</label>
-                <div class="col-sm-6">
-                    <input type="text" id="telefono" class="form-control" [(ngModel)]="pedido.telefono"
-                        aria-label="Username" aria-describedby="basic-addon1">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="email" class="col-sm-2 col-form-label">Email:</label>
-                <div class="col-sm-6">
-                    <input type="text" id="email" class="form-control" [(ngModel)]="pedido.email" aria-label="Username"
-                        aria-describedby="basic-addon1">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="direccion" class="col-sm-2 col-form-label">Dirección:</label>
-                <div class="col-sm-10">
-                    <input type="text" id="direccion" class="form-control" [(ngModel)]="pedido.direccion"
-                        aria-label="Username" aria-describedby="basic-addon1">
-                </div>
-            </div>
-
-
-
-
             <div class="card flex justify-content-center">
                 <p-button label="Grabar" [loading]="loading" (onClick)="grabarOrden()"></p-button>
+
             </div>
+            
         </p-tabPanel>
     </p-tabView>
 

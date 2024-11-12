@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, collectionData, doc, deleteDoc, updateDoc, query, where, getDocs } from '@angular/fire/firestore';
+import { Firestore, doc, collection, addDoc, deleteDoc, query, where, getDocs } from '@angular/fire/firestore';
 import Orden from '../interfaces/orden.interface';
 
 @Injectable({
@@ -14,6 +14,11 @@ export class OrdenesService {
     return addDoc(ordenRef, orden);
   }
 
+  deleteOrden(orden: Orden){
+    const ordenDocRef = doc(this.firestore, `ordenes/${orden.id}`);
+    return deleteDoc(ordenDocRef);
+  }
+
   async queryOrdenesPorFecha(d1: number, d2: number ): Promise<Orden[]> {
     const q = query(collection(this.firestore, "ordenes"), 
               where("fechainteger", ">=", d1),
@@ -21,9 +26,10 @@ export class OrdenesService {
     const querySnapshot = await getDocs(q);
     let ordenes: any = [];
     querySnapshot.forEach((doc) => {
-      ordenes.push(doc.data() as Orden);
+      let item = doc.data() as Orden;
+      item.id = doc.id;
+      ordenes.push(item);
     });
-    console.log(ordenes);
     return ordenes;
   }
 

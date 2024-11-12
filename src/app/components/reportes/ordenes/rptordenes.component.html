@@ -69,6 +69,8 @@
         </div>
     </ng-template>
     <ng-template pTemplate="footer">
+        <button pButton pRipple label="Eliminar" icon="pi pi-trash" class="p-button-danger" (click)="deleteOrden()"></button>
         <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
     </ng-template>
 </p-dialog>
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

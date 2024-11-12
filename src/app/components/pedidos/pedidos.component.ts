@@ -54,14 +54,14 @@ export class PedidosComponent extends BaseComponent {
     this.getSecuenciaPromise();
   }
 
-  getProductosPromise(): void{
-    this.productosService.getProductosPromise().then( productos => {
+  getProductosPromise(): void {
+    this.productosService.getProductosPromise().then(productos => {
       this.lproductos = productos;
     })
   }
 
-  getSecuenciaPromise(): void{
-    this.secuenciaService.getSecuenciaPromise().then( secuencia => {
+  getSecuenciaPromise(): void {
+    this.secuenciaService.getSecuenciaPromise().then(secuencia => {
       this.lsecuencia = secuencia;
       let d = new Date();
       this.fechainteger = this.fechaToInteger(d);
@@ -167,10 +167,14 @@ export class PedidosComponent extends BaseComponent {
   }
 
   continueToResumen() {
-    //debugger;
     this.activeTabId = 1;
     this.cargarDetalleOrden();
   }
+
+  backToSeleccion() {
+    this.activeTabId = 0;
+  }
+
   cargarDetalleOrden() {
     this.pedido.productos = [];
     this.calcularDetalles(this.lproductoschocho.filter(x => x.badge > 0));
@@ -205,6 +209,9 @@ export class PedidosComponent extends BaseComponent {
   }
 
   grabarOrden() {
+
+    if (this.activeTabId != 1) return;
+
     this.loading = true;
     setTimeout(() => {
       let d = new Date();
@@ -236,12 +243,12 @@ export class PedidosComponent extends BaseComponent {
     }, 100);
 
     this.router.navigateByUrl('main');
-      // this.router.navigate(['main']).then(() => {
-      //   window.location.reload();
-      // });
+    // this.router.navigate(['main']).then(() => {
+    //   window.location.reload();
+    // });
   }
 
-  async actualizarSecuencia(){
+  async actualizarSecuencia() {
     const response = await this.secuenciaService.updateSecuencia(this.lsecuencia[0]);
   }
 }
