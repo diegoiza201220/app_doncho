@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import Producto from 'src/app/interfaces/productos.interface';
 import { ProductosService } from 'src/app/services/productos.service';
 import { MessageService, ConfirmationService } from 'primeng/api';
@@ -34,7 +34,9 @@ export class PedidosComponent extends BaseComponent {
   cambio: number = 0;
   loading: boolean = false;
   fechainteger: number = 0;
-  activeTabId: number = 0;
+  activeIndex: number = 0;
+
+  @ViewChild('efectivorecibido') input: ElementRef | undefined; 
 
   constructor(private productosService: ProductosService,
     private messageService: MessageService,
@@ -157,22 +159,28 @@ export class PedidosComponent extends BaseComponent {
 
   onChangeTab(event: any) {
     //debugger;
-    this.activeTabId = event.index;
+    this.activeIndex = event.index;
     switch (event.index) {
       case 1: {
         this.cargarDetalleOrden();
+        this.focusPago();
         break;
       }
     }
   }
 
+  focusPago(){
+    this.input?.nativeElement.focus();
+  }
+
   continueToResumen() {
-    this.activeTabId = 1;
+    this.activeIndex = 1;
     this.cargarDetalleOrden();
+    this.focusPago();
   }
 
   backToSeleccion() {
-    this.activeTabId = 0;
+    this.activeIndex = 0;
   }
 
   cargarDetalleOrden() {
@@ -204,13 +212,13 @@ export class PedidosComponent extends BaseComponent {
     operacion == '+' ? lista.find(x => x.id == producto.id).badge++ : lista.find(x => x.id == producto.id).badge--;
   }
 
-  onBlurPago() {
+  calcularCambio(value: any) {
     this.cambio = this.pago - this.pedido.totalorden;
   }
 
   grabarOrden() {
 
-    if (this.activeTabId != 1) return;
+    if (this.activeIndex != 1) return;
 
     this.loading = true;
     setTimeout(() => {

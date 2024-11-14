@@ -1,5 +1,5 @@
-<div class="card" style="background-color: white;" (keydown.enter)="grabarOrden()">
-    <p-tabView (onChange)="onChangeTab($event)" [activeIndex]="activeTabId" styleClass="tabview-custom">
+<div class="card" style="background-color: white;">
+    <p-tabView (onChange)="onChangeTab($event)" [(activeIndex)]="activeIndex" styleClass="tabview-custom">
         <p-tabPanel header="Selección de platos">
             <div style="background-color: white;align-items: center;">
                 <span>
@@ -37,7 +37,7 @@
             </div>
             <div class="row" style="background-color: white;">
                 <div class="item">
-                    <p-button (onClick)="continueToResumen();">Click para continuar
+                    <p-button (onClick)="activeIndex = 1">Click para continuar
                     </p-button>
                 </div>
             </div>
@@ -86,7 +86,7 @@
             </div>
             <div class="row" style="background-color: white;">
                 <div class="item">
-                    <p-button (onClick)="continueToResumen();">Click para continuar
+                    <p-button (onClick)="activeIndex = 1">Click para continuar
                     </p-button>
                 </div>
             </div>
@@ -141,9 +141,8 @@
             <div class="form-group row" style="font-size: medium; ">
                 <label for="pago" class="col-sm-2 col-form-label" style="font-size:larger; font-weight: bolder;">Efectivo recibido:</label>
                 <div class="col-sm-2">
-                    <input matInput onfocus="this.select()" type="text" id="pago" class="form-control" style="color: navy;font-size:larger; "
-                        placeholder="Pago" [(ngModel)]="pago" aria-label="Username" aria-describedby="basic-addon1"
-                        (blur)="onBlurPago()">
+                    <input #efectivorecibido matInput onfocus="this.select()" type="text" id="pago" class="form-control" style="color: navy;font-size:larger; "
+                        placeholder="Pago" [(ngModel)]="pago" (ngModelChange)="calcularCambio($event)">
                 </div>
             </div>
 
@@ -165,7 +164,7 @@
                     data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                     Datos Adicionales
                 </button>
-                <p-button label="Regresar" (onClick)="backToSeleccion()"></p-button>
+                <p-button label="Regresar" (onClick)="activeIndex = 0"></p-button>
             </p>
             <div class="collapse" id="collapseExample">
                 <div class="card card-body">
