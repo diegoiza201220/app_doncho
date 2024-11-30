@@ -3,8 +3,8 @@
         <p-tabPanel header="Selección de platos">
             <div style="background-color: white;align-items: center;">
                 <span>
-                    <p-button (onClick)="fillGrupoProducto();" *ngIf="this.mostrarCargar">Cargar productos!
-                    </p-button>
+                    <!-- <p-button (onClick)="fillGrupoProducto();" *ngIf="this.mostrarCargar">Cargar productos!
+                    </p-button> -->
                     <H5>ORDEN NUMERO: {{ lsecuencia[0].secuencia }}</H5>
                 </span>
             </div>
@@ -35,9 +35,9 @@
                         (onClick)="onClickProducto(producto,'-')">x</p-button>
                 </div>
             </div>
-            <div class="row" style="background-color: white;">
+            <div class="divFlotanteGrabarContinuar" style="background-color: white;">
                 <div class="item">
-                    <p-button (onClick)="activeIndex = 1">Click para continuar
+                    <p-button (onClick)="continueToResumen()">Click para continuar
                     </p-button>
                 </div>
             </div>
@@ -84,12 +84,12 @@
                         (onClick)="onClickProducto(producto,'-')">x</p-button>
                 </div>
             </div>
-            <div class="row" style="background-color: white;">
+            <!-- <div class="row" style="background-color: white;">
                 <div class="item">
                     <p-button (onClick)="activeIndex = 1">Click para continuar
                     </p-button>
                 </div>
-            </div>
+            </div> -->
 
         </p-tabPanel>
         <p-tabPanel header="Resumen de orden">
@@ -139,10 +139,12 @@
             </div>
 
             <div class="form-group row" style="font-size: medium; ">
-                <label for="pago" class="col-sm-2 col-form-label" style="font-size:larger; font-weight: bolder;">Efectivo recibido:</label>
+                <label for="pago" class="col-sm-2 col-form-label"
+                    style="font-size:larger; font-weight: bolder;">Efectivo recibido:</label>
                 <div class="col-sm-2">
-                    <input #efectivorecibido matInput onfocus="this.select()" type="text" id="pago" class="form-control" style="color: navy;font-size:larger; "
-                        placeholder="Pago" [(ngModel)]="pago" (ngModelChange)="calcularCambio($event)">
+                    <input #efectivorecibido matInput onfocus="this.select()" type="text" id="pago" class="form-control"
+                        style="color: navy;font-size:larger; " placeholder="Pago" [(ngModel)]="pago"
+                        (ngModelChange)="calcularCambio($event)">
                 </div>
             </div>
 
@@ -164,7 +166,7 @@
                     data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                     Datos Adicionales
                 </button>
-                <p-button label="Regresar" (onClick)="activeIndex = 0"></p-button>
+                
             </p>
             <div class="collapse" id="collapseExample">
                 <div class="card card-body">
@@ -206,11 +208,17 @@
                     </div>
                 </div>
             </div>
-            <div class="card flex justify-content-center">
-                <p-button label="Grabar" [loading]="loading" (onClick)="grabarOrden()"></p-button>
-
+            <div class="divFlotanteRegresar">
+                <div class="">
+                <p-button label="Regresar" (onClick)="activeIndex = 0"></p-button>
             </div>
-            
+            </div>
+            <div class="divFlotanteGrabarContinuar">
+                <div class="">
+                    <p-button label="Grabar" [loading]="loading" (onClick)="grabarOrden()"></p-button>
+                </div>
+            </div>
+
         </p-tabPanel>
     </p-tabView>
 

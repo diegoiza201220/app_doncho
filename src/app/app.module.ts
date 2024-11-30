@@ -36,6 +36,8 @@ import { RptVentasproductosComponent } from './components/reportes/ventasproduct
 import { ChartModule } from 'primeng/chart';
 import { IngredientesComponent } from './components/ingredientes/ingredientes.component';
 import { RptOrdenesComponent } from './components/reportes/ordenes/rptordenes.component';
+import { provideAuth, getAuth } from '@angular/fire/auth';
+import { AngularFireModule } from '@angular/fire/compat';
 
 @NgModule({
   declarations: [
@@ -56,7 +58,10 @@ import { RptOrdenesComponent } from './components/reportes/ordenes/rptordenes.co
     BrowserModule,
     AppRoutingModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideFirestore(() => getFirestore()), TableModule, MessagesModule, InputTextModule,InputNumberModule,
+    provideFirestore(() => getFirestore()),
+    provideAuth(() => getAuth()),
+    AngularFireModule.initializeApp(environment.firebase),
+    TableModule, MessagesModule, InputTextModule,InputNumberModule,
     ToastModule, FormsModule, BrowserAnimationsModule, BadgeModule, TabViewModule, ChartModule,
     CheckboxModule, ToolbarModule, ButtonModule, DialogModule, ConfirmDialogModule,DropdownModule,SplitterModule, CalendarModule
   ],

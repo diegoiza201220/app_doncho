@@ -3,6 +3,7 @@ import Orden from 'src/app/interfaces/orden.interface';
 import { OrdenesService } from 'src/app/services/ordenes.service';
 import { BaseComponent } from 'src/app/util/base.component';
 import { MessageService, ConfirmationService } from 'primeng/api';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-rpt-ordenes',
@@ -11,8 +12,10 @@ import { MessageService, ConfirmationService } from 'primeng/api';
   providers: [MessageService, ConfirmationService]
 })
 export class RptOrdenesComponent extends BaseComponent {
-  constructor(private ordenesService: OrdenesService, private messageService: MessageService, private confirmationService: ConfirmationService) {
-    super();
+  constructor(private ordenesService: OrdenesService, private messageService: MessageService, private confirmationService: ConfirmationService,
+    public override authService: AuthService
+  ) {
+    super(authService);
   }
 
   [x: string]: any;

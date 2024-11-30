@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import Orden from 'src/app/interfaces/orden.interface';
+import { AuthService } from 'src/app/services/auth.service';
 import { OrdenesService } from 'src/app/services/ordenes.service';
 import { BaseComponent } from 'src/app/util/base.component';
 
@@ -25,8 +26,8 @@ export class RptVentasproductosComponent extends BaseComponent {
   basicDataPie: any;
   basicOptionsPie: any;
 
-  constructor(private ordenesService: OrdenesService)  {
-    super();
+  constructor(private ordenesService: OrdenesService, public override authService: AuthService)  {
+    super(authService);
   }
 
   ngOnInit(): void {

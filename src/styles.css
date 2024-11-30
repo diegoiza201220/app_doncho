@@ -132,3 +132,27 @@ button {
     display: inline-block;
     margin-left: 4em;
 }
+
+.divFlotanteGrabarContinuar{
+    position: fixed;
+    right: 50px;
+    bottom: 50px;
+}
+
+.divFlotanteRegresar{
+    position: fixed;
+    right: 50px;
+    bottom: 140px;
+}
+
+.divLogin{
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.textoLogin{
+    text-align: center;
+}

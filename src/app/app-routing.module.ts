@@ -11,20 +11,23 @@ import { RptOrdenesComponent } from './components/reportes/ordenes/rptordenes.co
 import { RptComprasComponent } from './components/reportes/compras/rptcompras.component';
 import { RptVentasComponent } from './components/reportes/ventas/rptventas.component';
 import { RptVentasproductosComponent } from './components/reportes/ventasproductos/rptventasproductos.component';
+import { LoginComponent } from './components/login/login.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
-  {path: 'main', component: MainComponent},
-  {path: 'productos', component: ProductosComponent},
-  {path: 'ingredientes', component: IngredientesComponent},
-  {path: 'compras', component: ComprasComponent},
-  {path: 'pedidos', component: PedidosComponent},
-  {path: 'cocina', component: CocinaComponent},
-  {path: 'ordenes', component: RptOrdenesComponent},
-  {path: 'compras', component: RptComprasComponent},
-  {path: 'ventas', component: RptVentasComponent},
-  {path: 'ventasproductos', component: RptVentasproductosComponent},
-  {path: '', redirectTo: '/main', pathMatch: 'full'},
-  {path: '**', component: MainComponent}
+  {path: '', redirectTo: '/login',pathMatch: 'full'},
+  {path: 'login', component: LoginComponent},
+  {path: 'main', component: MainComponent, canActivate: [AuthGuard] },
+  {path: 'productos', component: ProductosComponent, canActivate: [AuthGuard]},
+  {path: 'ingredientes', component: IngredientesComponent, canActivate: [AuthGuard]},
+  {path: 'compras', component: ComprasComponent, canActivate: [AuthGuard]},
+  {path: 'pedidos', component: PedidosComponent, canActivate: [AuthGuard]},
+  {path: 'cocina', component: CocinaComponent, canActivate: [AuthGuard]},
+  {path: 'ordenes', component: RptOrdenesComponent, canActivate: [AuthGuard]},
+  {path: 'compras', component: RptComprasComponent, canActivate: [AuthGuard]},
+  {path: 'ventas', component: RptVentasComponent, canActivate: [AuthGuard]},
+  {path: 'ventasproductos', component: RptVentasproductosComponent, canActivate: [AuthGuard]},
+  {path: '**', component: LoginComponent}
 ];
 
 @NgModule({

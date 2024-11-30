@@ -1,4 +1,12 @@
+import { Directive } from "@angular/core";
+import { AuthService } from "../services/auth.service";
+@Directive()
 export abstract class BaseComponent {
+    
+    constructor(public authService: AuthService) {
+    }
+
+
 
     fechaToInteger(fecha: Date): number {
         if (this.estaVacio(fecha)) {
@@ -36,5 +44,9 @@ export abstract class BaseComponent {
             return true;
         }
         return false;
+    }
+
+    get isloggedIn(): boolean{
+        return this.authService.isLoggedIn;
     }
 }

@@ -3,6 +3,7 @@ import Orden from 'src/app/interfaces/orden.interface';
 import { OrdenesService } from 'src/app/services/ordenes.service';
 import * as FileSaver from 'file-saver';
 import { BaseComponent } from 'src/app/util/base.component';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-rpt-ventas',
@@ -16,8 +17,8 @@ export class RptVentasComponent extends BaseComponent {
   d2 = new Date();
   lregistros!: Orden[];
 
-  constructor(private ordenesService: OrdenesService) {
-    super();
+  constructor(private ordenesService: OrdenesService, public override authService: AuthService) {
+    super(authService);
   }
 
   ngOnInit(): void {

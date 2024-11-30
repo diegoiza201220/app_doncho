@@ -9,6 +9,7 @@ import { OrdenescocinaService } from 'src/app/services/ordenescocina.service';
 import Secuencia from 'src/app/interfaces/secuencia.interface';
 import { BaseComponent } from 'src/app/util/base.component';
 import { DatePipe } from '@angular/common';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-pedidos',
@@ -45,9 +46,10 @@ export class PedidosComponent extends BaseComponent {
     private ordenesService: OrdenesService,
     private ordenesCocinaService: OrdenescocinaService,
     private router: Router,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    public override authService: AuthService
   ) {
-    super();
+    super(authService);
   }
 
   ngOnInit(): void {
@@ -59,6 +61,7 @@ export class PedidosComponent extends BaseComponent {
   getProductosPromise(): void {
     this.productosService.getProductosPromise().then(productos => {
       this.lproductos = productos;
+      this.fillGrupoProducto();
     })
   }
 
@@ -170,7 +173,7 @@ export class PedidosComponent extends BaseComponent {
   }
 
   focusPago(){
-    this.input?.nativeElement.focus();
+    //this.input?.nativeElement.focus();
   }
 
   continueToResumen() {
