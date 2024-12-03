@@ -26,7 +26,7 @@ export class AppComponent extends BaseComponent implements OnInit {
   userInactive: Subject<any> = new Subject();
 
   setTimeout() {
-    this.userActivity = setTimeout(() => this.userInactive.next(undefined), 180000);
+    this.userActivity = setTimeout(() => this.userInactive.next(undefined), 1800000);
   }
 
   @HostListener('window:mousemove') refreshUserState() {

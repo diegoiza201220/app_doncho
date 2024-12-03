@@ -6,7 +6,7 @@ export abstract class BaseComponent {
     constructor(public authService: AuthService) {
     }
 
-
+    emailsPermitidos = ['gerencia@doncho.com','diza@doncho.com'];
 
     fechaToInteger(fecha: Date): number {
         if (this.estaVacio(fecha)) {

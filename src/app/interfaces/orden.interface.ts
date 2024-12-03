@@ -11,6 +11,7 @@ export default interface Orden {
     tipodepago: string;
     documentopago: string;
     totalorden: number,
+    usuario: string,
     productos: [{
         cantidad: number,
         plato: string,
