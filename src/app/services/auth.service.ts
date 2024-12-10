@@ -54,6 +54,10 @@ export class AuthService {
     return user !== null;
   }
 
+  get userEmail(): string {
+    const user = JSON.parse(localStorage.getItem('user')!);
+    return user.email ;
+  }
   // logOut
   logOut() {
     return this.firebaseAuthenticationService.signOut().then(() => {

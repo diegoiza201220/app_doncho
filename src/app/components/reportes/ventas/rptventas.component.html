@@ -19,14 +19,14 @@
     <ng-template pTemplate="groupfooter" let-registro>
         <tr>
             <td colspan="5" class="text-right font-bold pr-6">Total tipo de pago {{registro.tipodepago}}:
-                {{calculateTipodepagoTotal(registro.tipodepago)}}</td>
+                {{calculateTipodepagoTotal(registro.tipodepago) | currency:'USD'}}</td>
         </tr>
     </ng-template>
     <ng-template pTemplate="caption">
-        <div class="flex">
+        <!-- <div class="flex">
             <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()"
                 class="p-button-success mr-2" pTooltip="XLS" tooltipPosition="bottom"></button>
-        </div>
+        </div> -->
     </ng-template>
     <ng-template pTemplate="header">
         <tr>

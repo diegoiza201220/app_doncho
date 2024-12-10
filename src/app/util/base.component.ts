@@ -2,11 +2,11 @@ import { Directive } from "@angular/core";
 import { AuthService } from "../services/auth.service";
 @Directive()
 export abstract class BaseComponent {
-    
+
     constructor(public authService: AuthService) {
     }
 
-    emailsPermitidos = ['gerencia@doncho.com','diza@doncho.com'];
+    emailsPermitidos = ['gerencia@doncho.com', 'diza@doncho.com'];
 
     fechaToInteger(fecha: Date): number {
         if (this.estaVacio(fecha)) {
@@ -46,7 +46,13 @@ export abstract class BaseComponent {
         return false;
     }
 
-    get isloggedIn(): boolean{
+    /**Redondea el valor con la precision enviada*/
+    public redondear(value: number, precision: number): number {
+        const multiplier = Math.pow(10, precision || 0);
+        return Math.round(value * multiplier) / multiplier;
+    }
+
+    get isloggedIn(): boolean {
         return this.authService.isLoggedIn;
     }
 }

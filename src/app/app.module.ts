@@ -34,10 +34,12 @@ import { RptVentasComponent } from './components/reportes/ventas/rptventas.compo
 import { CalendarModule } from 'primeng/calendar';
 import { RptVentasproductosComponent } from './components/reportes/ventasproductos/rptventasproductos.component';
 import { ChartModule } from 'primeng/chart';
-import { IngredientesComponent } from './components/ingredientes/ingredientes.component';
+import { ItemsComponent } from './components/items/items.component';
 import { RptOrdenesComponent } from './components/reportes/ordenes/rptordenes.component';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { AngularFireModule } from '@angular/fire/compat';
+import { ComprasComponent } from './components/compras/compras.component';
+import { TwoDigitDecimaNumberDirective } from './util/directives/twodigitdecimalnumberdirective';
 
 @NgModule({
   declarations: [
@@ -51,8 +53,9 @@ import { AngularFireModule } from '@angular/fire/compat';
     RptComprasComponent,
     RptVentasComponent,
     RptVentasproductosComponent,
-    IngredientesComponent,
+    ItemsComponent,
     RptOrdenesComponent, 
+    ComprasComponent, TwoDigitDecimaNumberDirective
   ],
   imports: [
     BrowserModule,

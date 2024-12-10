@@ -9,9 +9,11 @@ import { BaseComponent } from 'src/app/util/base.component';
 })
 export class LoginComponent extends BaseComponent {
 
-
-
   logIn(email: string, password: string) {
-    this.authService.logInWithEmailAndPassword(email, password);
+    return this.authService.logInWithEmailAndPassword(email, password)
+      .then((user)=>{
+        console.info(" logInWithEmailAndPassword oK");
+      }
+    )
   }
 }

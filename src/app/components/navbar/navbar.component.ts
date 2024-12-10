@@ -26,6 +26,6 @@ export class NavbarComponent extends BaseComponent implements OnInit {
   }
 
   configureMenu(){
-    this.mostrarItems = this.mostrarReportes = this.emailsPermitidos.indexOf(this.authService.userData.email) !== -1;
+    this.mostrarItems = this.mostrarReportes = this.emailsPermitidos.indexOf(this.authService.userEmail) !== -1;
   }
 }

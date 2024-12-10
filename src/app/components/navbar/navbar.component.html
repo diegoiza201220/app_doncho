@@ -13,7 +13,7 @@
           </a>
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="/productos">Productos</a></li>
-            <li><a class="dropdown-item" href="/ingredientes">Ingredientes</a></li>
+            <li><a class="dropdown-item" href="/items">Items</a></li>
             <li><a class="dropdown-item" href="/compras">Compras</a></li>
           </ul>
         </li>
@@ -24,16 +24,16 @@
           <a class="nav-link" [routerLink]="'/cocina'">Cocina</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="'/ordenes'">Ver Ordenes</a>
+          <a class="nav-link" [routerLink]="'/rptordenes'">Ver Ordenes</a>
         </li>
         <li *ngIf="mostrarReportes" class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Reportes
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/ventas">Ventas</a></li>
-            <li><a class="dropdown-item" href="/ventasproductos">Ventas productos</a></li>
-            <li><a class="dropdown-item" href="/compras">Compras</a></li>
+            <li><a class="dropdown-item" href="/rptventas">Ventas</a></li>
+            <li><a class="dropdown-item" href="/rptventasproductos">Ventas productos</a></li>
+            <li><a class="dropdown-item" href="/rptcompras">Compras</a></li>
           </ul>
         </li>
       </ul>

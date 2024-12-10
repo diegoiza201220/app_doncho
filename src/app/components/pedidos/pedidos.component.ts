@@ -226,7 +226,7 @@ export class PedidosComponent extends BaseComponent {
     this.loading = true;
     setTimeout(() => {
       let d = new Date();
-      this.pedido.usuario = this.authService.userData.email;
+      this.pedido.usuario = this.authService.userEmail;
       this.pedido.secuencial = this.lsecuencia[0].secuencia;
       this.pedido.tipodepago = this.selectedFP;
       this.pedido.fecha = d;
@@ -255,9 +255,6 @@ export class PedidosComponent extends BaseComponent {
     }, 100);
 
     this.router.navigateByUrl('main');
-    // this.router.navigate(['main']).then(() => {
-    //   window.location.reload();
-    // });
   }
 
   async actualizarSecuencia() {

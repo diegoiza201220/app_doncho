@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Firestore, doc, collection, addDoc, deleteDoc, query, where, getDocs } from '@angular/fire/firestore';
+import { Firestore, doc, collection, addDoc, deleteDoc, query, where, getDocs, orderBy, limit } from '@angular/fire/firestore';
 import Orden from '../interfaces/orden.interface';
 
 @Injectable({
@@ -30,6 +30,7 @@ export class OrdenesService {
       item.id = doc.id;
       ordenes.push(item);
     });
+    ordenes.sort((a: { secuencial: string; },b: { secuencial: any; }) => a.secuencial<b.secuencial);
     return ordenes;
   }
 

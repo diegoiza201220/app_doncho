@@ -15,23 +15,6 @@ export class AppComponent extends BaseComponent implements OnInit {
 
   constructor(private primengConfig: PrimeNGConfig, public override authService: AuthService) {
     super(authService);
-    this.setTimeout();
-    this.userInactive.subscribe(() => {
-      console.log('user has been inactive for 30 minutes');
-      this.authService.logOut();
-    });
-  }
-
-  userActivity: any;
-  userInactive: Subject<any> = new Subject();
-
-  setTimeout() {
-    this.userActivity = setTimeout(() => this.userInactive.next(undefined), 1800000);
-  }
-
-  @HostListener('window:mousemove') refreshUserState() {
-    clearTimeout(this.userActivity);
-    this.setTimeout();
   }
 
   ngOnInit() {

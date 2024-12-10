@@ -5,8 +5,7 @@ import { MainComponent } from './components/main/main.component';
 import { PedidosComponent } from './components/pedidos/pedidos.component';
 import { CocinaComponent } from './components/cocina/cocina.component';
 import { ComprasComponent } from './components/compras/compras.component';
-import { IngredientesComponent } from './components/ingredientes/ingredientes.component';
-
+import { ItemsComponent } from './components/items/items.component';
 import { RptOrdenesComponent } from './components/reportes/ordenes/rptordenes.component';
 import { RptComprasComponent } from './components/reportes/compras/rptcompras.component';
 import { RptVentasComponent } from './components/reportes/ventas/rptventas.component';
@@ -19,14 +18,14 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'main', component: MainComponent, canActivate: [AuthGuard] },
   {path: 'productos', component: ProductosComponent, canActivate: [AuthGuard]},
-  {path: 'ingredientes', component: IngredientesComponent, canActivate: [AuthGuard]},
+  {path: 'items', component: ItemsComponent, canActivate: [AuthGuard]},
   {path: 'compras', component: ComprasComponent, canActivate: [AuthGuard]},
   {path: 'pedidos', component: PedidosComponent, canActivate: [AuthGuard]},
   {path: 'cocina', component: CocinaComponent, canActivate: [AuthGuard]},
-  {path: 'ordenes', component: RptOrdenesComponent, canActivate: [AuthGuard]},
-  {path: 'compras', component: RptComprasComponent, canActivate: [AuthGuard]},
-  {path: 'ventas', component: RptVentasComponent, canActivate: [AuthGuard]},
-  {path: 'ventasproductos', component: RptVentasproductosComponent, canActivate: [AuthGuard]},
+  {path: 'rptordenes', component: RptOrdenesComponent, canActivate: [AuthGuard]},
+  {path: 'rptcompras', component: RptComprasComponent, canActivate: [AuthGuard]},
+  {path: 'rptventas', component: RptVentasComponent, canActivate: [AuthGuard]},
+  {path: 'rptventasproductos', component: RptVentasproductosComponent, canActivate: [AuthGuard]},
   {path: '**', component: LoginComponent}
 ];
 

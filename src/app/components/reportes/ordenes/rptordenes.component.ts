@@ -30,7 +30,7 @@ export class RptOrdenesComponent extends BaseComponent {
   ngOnInit(): void {
     let d = new Date();
     this.d1 = this.d2 = d;
-    this.mostrarEliminar = this.emailsPermitidos.indexOf(this.authService.userData.email) !== -1;
+    this.mostrarEliminar = this.emailsPermitidos.indexOf(this.authService.userEmail) !== -1;
   }
 
   Buscar() {
