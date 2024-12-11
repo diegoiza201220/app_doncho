@@ -12,6 +12,7 @@ import { RptVentasComponent } from './components/reportes/ventas/rptventas.compo
 import { RptVentasproductosComponent } from './components/reportes/ventasproductos/rptventasproductos.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
+import { InventariosComponent } from './components/inventarios/inventarios.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/login',pathMatch: 'full'},
@@ -20,6 +21,7 @@ const routes: Routes = [
   {path: 'productos', component: ProductosComponent, canActivate: [AuthGuard]},
   {path: 'items', component: ItemsComponent, canActivate: [AuthGuard]},
   {path: 'compras', component: ComprasComponent, canActivate: [AuthGuard]},
+  {path: 'inventarios', component: InventariosComponent, canActivate: [AuthGuard]},
   {path: 'pedidos', component: PedidosComponent, canActivate: [AuthGuard]},
   {path: 'cocina', component: CocinaComponent, canActivate: [AuthGuard]},
   {path: 'rptordenes', component: RptOrdenesComponent, canActivate: [AuthGuard]},

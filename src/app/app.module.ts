@@ -40,6 +40,7 @@ import { provideAuth, getAuth } from '@angular/fire/auth';
 import { AngularFireModule } from '@angular/fire/compat';
 import { ComprasComponent } from './components/compras/compras.component';
 import { TwoDigitDecimaNumberDirective } from './util/directives/twodigitdecimalnumberdirective';
+import { InventariosComponent } from './components/inventarios/inventarios.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,7 @@ import { TwoDigitDecimaNumberDirective } from './util/directives/twodigitdecimal
     RptVentasproductosComponent,
     ItemsComponent,
     RptOrdenesComponent, 
-    ComprasComponent, TwoDigitDecimaNumberDirective
+    ComprasComponent, TwoDigitDecimaNumberDirective, InventariosComponent
   ],
   imports: [
     BrowserModule,
