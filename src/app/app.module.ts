@@ -41,6 +41,8 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { ComprasComponent } from './components/compras/compras.component';
 import { TwoDigitDecimaNumberDirective } from './util/directives/twodigitdecimalnumberdirective';
 import { InventariosComponent } from './components/inventarios/inventarios.component';
+import { RptInventariosComponent } from './components/reportes/inventarios/rptinventarios.component';
+import { RptComprasVsInventariosComponent } from './components/reportes/comprasvsinventarios/rptcomprasvsinventarios.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +58,7 @@ import { InventariosComponent } from './components/inventarios/inventarios.compo
     RptVentasproductosComponent,
     ItemsComponent,
     RptOrdenesComponent, 
-    ComprasComponent, TwoDigitDecimaNumberDirective, InventariosComponent
+    ComprasComponent, TwoDigitDecimaNumberDirective, InventariosComponent, RptInventariosComponent, RptComprasVsInventariosComponent
   ],
   imports: [
     BrowserModule,

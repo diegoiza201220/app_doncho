@@ -69,6 +69,7 @@ export class InventariosComponent extends BaseComponent {
         let i : any = {};
         i.id = ele.id;
         i.nombre = ele.nombre;
+        i.unidad = ele.unidad;
         i.existencia = ele.existencia;
         this.inventario.items.push(i);
       }

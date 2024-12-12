@@ -15,10 +15,12 @@ export class RptVentasproductosComponent extends BaseComponent {
   d1 = new Date();
   d2 = new Date();
   lregistros!: Orden[];
+  ready = false;
 
 
   ldata: any[] = [];
   bgcolor: any[] = [];
+  ldataBar: any[] = [];
 
   basicDataBar: any;
   basicOptionsBar: any;
@@ -38,6 +40,7 @@ export class RptVentasproductosComponent extends BaseComponent {
   Buscar() {
     this.ordenesService.queryOrdenesPorFecha(this.fechaToInteger(this.d1), this.fechaToInteger(this.d2)).then(resp => {
       this.lregistros = resp;
+      this.ready = true;
     });
   }
 
@@ -50,6 +53,7 @@ export class RptVentasproductosComponent extends BaseComponent {
 
     this.procesarDataBar();
     this.procesarDataPie();
+    this.ready = false;
   }
 
   procesarDataPie() {
@@ -102,18 +106,18 @@ export class RptVentasproductosComponent extends BaseComponent {
     const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
-    let ldataBar: any[] = [];
+    this.ldataBar = [];
 
     const result = Object.values(this.ldata.reduce((r, o) => (r[o.id]
       ? (r[o.id].cantidad += o.cantidad)
       : (r[o.id] = { ...o }), r), {}));
 
-    ldataBar = result;
+    this.ldataBar = result;
     const label: any[] = [];
     const data: any[] = [];
 
-    ldataBar.sort((a, b) => (a.cantidad > b.cantidad ? -1 : 1));
-    ldataBar.forEach(element => {
+    this.ldataBar.sort((a, b) => (a.cantidad > b.cantidad ? -1 : 1));
+    this.ldataBar.forEach(element => {
       label.push(element.id);
       data.push(element.cantidad);
       this.bgcolor.push(this.randomRGB());
