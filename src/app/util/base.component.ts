@@ -1,9 +1,13 @@
 import { Directive } from "@angular/core";
 import { AuthService } from "../services/auth.service";
+import { LoggerService } from "../services/logger.service";
+
 @Directive()
 export abstract class BaseComponent {
 
-    constructor(public authService: AuthService) {
+    constructor(public authService: AuthService, 
+        public logger: LoggerService
+    ) {
     }
 
     emailsPermitidos = ['gerencia@doncho.com', 'diza@doncho.com'];

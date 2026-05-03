@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MessageService, SelectItem, ConfirmationService } from 'primeng/api';
 import Producto from 'src/app/interfaces/productos.interface';
 import { ProductosService } from 'src/app/services/productos.service';
+import { LoggerService } from 'src/app/services/logger.service';
 
 @Component({
   selector: 'app-productos',
@@ -31,7 +32,10 @@ export class ProductosComponent {
     { label: 'OTROS', value: 'OTROS' }
   ];
 
-  constructor(private productosService: ProductosService, private messageService: MessageService, private confirmationService: ConfirmationService) {
+  constructor(private productosService: ProductosService, 
+    private messageService: MessageService, 
+    private confirmationService: ConfirmationService,
+    private logger: LoggerService) {
   }
 
   ngOnInit(): void {
@@ -68,21 +72,22 @@ export class ProductosComponent {
   getProductosPromise(): void{
     this.productosService.getProductosPromise().then( productos => {
       this.lproductos = productos;
+      console.log(this.lproductos);
     })
   }
   async addProducto() {
     const response = await this.productosService.addProducto(this.producto);
-    console.log(response);
+    this.logger.log(response);
   }
 
   async deleteProducto(producto: Producto) {
     const response = await this.productosService.deleteProducto(producto);
-    //console.log(response);
+    this.logger.log(response);
   }
 
   async updateProducto(producto: Producto) {
     const response = await this.productosService.updateProducto(producto);
-    console.log(response);
+    this.logger.log(response);
   }
 
   onRowEditInit(producto: Producto) {

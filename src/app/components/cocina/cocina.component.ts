@@ -4,6 +4,7 @@ import Ordencocina from 'src/app/interfaces/ordencocina.interface';
 import Produccioncocina from 'src/app/interfaces/produccioncocina.interface';
 import { OrdenescocinaService } from 'src/app/services/ordenescocina.service';
 import { ProduccioncocinaService } from 'src/app/services/produccioncocina.service';
+import { LoggerService } from 'src/app/services/logger.service';
 
 
 @Component({
@@ -21,12 +22,13 @@ export class CocinaComponent {
   clonedProduccioncocina: { [s: string]: Produccioncocina } = {};
 
 
-  constructor(private ordenescocinaService: OrdenescocinaService, 
-    private messageService: MessageService, 
+  constructor(private ordenescocinaService: OrdenescocinaService,
+    private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private produccioncocinaService: ProduccioncocinaService) {
+    private produccioncocinaService: ProduccioncocinaService,
+    private readonly logger: LoggerService) {
   }
-  
+
   ngOnInit(): void {
     this.getOrdenesCocinaObserver();
     this.getProduccionCocinaObserver();
@@ -34,7 +36,7 @@ export class CocinaComponent {
 
   getOrdenesCocinaObserver(): void {
     this.ordenescocinaService.getOrdenescocinaObservable().subscribe(productos => {
-      this.lordenescocina = productos.filter(x=> !x.procesado || !x.recibido || !x.entregado);
+      this.lordenescocina = productos.filter(x => !x.procesado || !x.recibido || !x.entregado);
     })
   }
 
@@ -61,7 +63,7 @@ export class CocinaComponent {
 
   async updateOrdenCocina(ordencocina: Ordencocina) {
     const response = await this.ordenescocinaService.updateOrdenescocina(ordencocina);
-    console.log(response);
+    this.logger.log(response);
   }
 
   onRowEditInitPC(produccioncocina: Produccioncocina) {
@@ -80,14 +82,14 @@ export class CocinaComponent {
   }
 
   async updateProduccionCocina(produccioncocina: Produccioncocina) {
-    console.log(produccioncocina);
-    if (produccioncocina.solicitado && produccioncocina.procesado && produccioncocina.entregado){
+    this.logger.log(produccioncocina);
+    if (produccioncocina.solicitado && produccioncocina.procesado && produccioncocina.entregado) {
       produccioncocina.solicitado = produccioncocina.procesado = produccioncocina.entregado = false;
       produccioncocina.observacion = '';
     }
-    console.log(produccioncocina);
-    const response = await this.produccioncocinaService.updateProduccioncocina(produccioncocina);
-    
+    this.logger.log(produccioncocina);
+    await this.produccioncocinaService.updateProduccioncocina(produccioncocina);
+
   }
 
 }

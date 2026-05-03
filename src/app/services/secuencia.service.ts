@@ -2,17 +2,20 @@ import { Injectable } from '@angular/core';
 import { Firestore, collection, collectionData, doc, updateDoc, query, getDocs } from '@angular/fire/firestore';
 import Secuencia from '../interfaces/secuencia.interface';
 import { Observable } from 'rxjs';
+import { LoggerService } from 'src/app/services/logger.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SecuenciaService {
 
-  constructor(private firestore:Firestore) { }
+  constructor(private readonly firestore: Firestore,
+    private readonly logger: LoggerService
+  ) { }
 
-  getSecuenciaObservable(): Observable<Secuencia[]>{
+  getSecuenciaObservable(): Observable<Secuencia[]> {
     const secuenciaRef = collection(this.firestore, 'secuencia');
-    return collectionData(secuenciaRef, {idField:'id'}) as Observable<Secuencia[]>;
+    return collectionData(secuenciaRef, { idField: 'id' }) as Observable<Secuencia[]>;
   }
 
   updateSecuencia(secuencia: Secuencia) {
@@ -31,7 +34,7 @@ export class SecuenciaService {
       secuencias.push(secuencia);
     });
 
-    console.log(secuencias);
+    this.logger.log(secuencias);
     return secuencias;
   }
 }

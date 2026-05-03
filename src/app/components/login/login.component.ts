@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { AuthService } from 'src/app/services/auth.service';
 import { BaseComponent } from 'src/app/util/base.component';
 
 @Component({
@@ -12,7 +11,7 @@ export class LoginComponent extends BaseComponent {
   logIn(email: string, password: string) {
     return this.authService.logInWithEmailAndPassword(email, password)
       .then((user)=>{
-        console.info(" logInWithEmailAndPassword oK");
+        this.logger.log(" logInWithEmailAndPassword oK");
       }
     )
   }

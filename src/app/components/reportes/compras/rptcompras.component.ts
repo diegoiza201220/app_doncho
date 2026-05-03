@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import Compra from 'src/app/interfaces/compra.interface';
 import { ComprasService } from 'src/app/services/compras.service';
-//import * as FileSaver from 'file-saver';
 import { BaseComponent } from 'src/app/util/base.component';
 import { AuthService } from 'src/app/services/auth.service';
+import { LoggerService } from 'src/app/services/logger.service';
 
 @Component({
   selector: 'app-rpt-compras',
@@ -21,8 +21,8 @@ export class RptComprasComponent extends BaseComponent {
   selectedCompra!: Compra;
   compraDialogo: boolean = false;
 
-  constructor(private comprasService: ComprasService, public override authService: AuthService) {
-    super(authService);
+  constructor(private comprasService: ComprasService, public override authService: AuthService, public override logger: LoggerService) {
+    super(authService, logger);
   }
 
   ngOnInit(): void {

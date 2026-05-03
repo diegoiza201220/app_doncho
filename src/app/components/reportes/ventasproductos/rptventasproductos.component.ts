@@ -3,6 +3,7 @@ import Orden from 'src/app/interfaces/orden.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { OrdenesService } from 'src/app/services/ordenes.service';
 import { BaseComponent } from 'src/app/util/base.component';
+import { LoggerService } from 'src/app/services/logger.service';
 
 @Component({
   selector: 'app-rpt-ventasproductos',
@@ -28,8 +29,10 @@ export class RptVentasproductosComponent extends BaseComponent {
   basicDataPie: any;
   basicOptionsPie: any;
 
-  constructor(private ordenesService: OrdenesService, public override authService: AuthService)  {
-    super(authService);
+  constructor(private ordenesService: OrdenesService, 
+    public override authService: AuthService, 
+    public override logger: LoggerService) {
+    super(authService, logger);
   }
 
   ngOnInit(): void {

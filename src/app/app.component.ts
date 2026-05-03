@@ -1,8 +1,8 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PrimeNGConfig } from 'primeng/api';
 import { BaseComponent } from './util/base.component';
 import { AuthService } from './services/auth.service';
-import { Subject } from 'rxjs';
+import { LoggerService } from './services/logger.service';
 
 @Component({
   selector: 'app-root',
@@ -13,8 +13,11 @@ export class AppComponent extends BaseComponent implements OnInit {
 
   showNavBar!: boolean;
 
-  constructor(private primengConfig: PrimeNGConfig, public override authService: AuthService) {
-    super(authService);
+  constructor(private primengConfig: PrimeNGConfig, 
+    public override authService: AuthService,
+    public override logger: LoggerService
+  ) {
+    super(authService, logger);
   }
 
   ngOnInit() {

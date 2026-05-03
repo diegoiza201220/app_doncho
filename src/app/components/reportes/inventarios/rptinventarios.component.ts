@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-//import * as FileSaver from 'file-saver';
 import { BaseComponent } from 'src/app/util/base.component';
 import { AuthService } from 'src/app/services/auth.service';
 import Inventario from 'src/app/interfaces/inventario.interface';
 import { InventariosService } from 'src/app/services/inventarios.service';
+import { LoggerService } from 'src/app/services/logger.service';  
 
 @Component({
   selector: 'app-rpt-inventario',
@@ -20,8 +20,8 @@ export class RptInventariosComponent extends BaseComponent {
   selectedInventario!: Inventario;
   inventarioDialogo: boolean = false;
 
-  constructor(private inventariosService: InventariosService, public override authService: AuthService) {
-    super(authService);
+  constructor(private inventariosService: InventariosService, public override authService: AuthService, public override logger: LoggerService) {
+    super(authService, logger);
   }
 
   ngOnInit(): void {

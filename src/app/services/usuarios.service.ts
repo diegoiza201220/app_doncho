@@ -2,13 +2,15 @@ import { Injectable } from '@angular/core';
 import { Firestore, collection, addDoc, collectionData, getDoc, query, where, getDocs} from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import Usuario from '../interfaces/usuario.interface';
-
+import { LoggerService } from 'src/app/services/logger.service';
 @Injectable({
   providedIn: 'root'
 })
 export class UsuariosService {
 
-  constructor(private firestore:Firestore) { }
+  constructor(private readonly firestore:Firestore,
+    private readonly logger: LoggerService
+  ) { }
 
   async query(usuario: Usuario): Promise<Usuario>{
     let u : Usuario = {nombre:'',password:'.'};
@@ -21,7 +23,7 @@ export class UsuariosService {
     const docsSnap = await getDocs(q);
         
     docsSnap.forEach((doc) => {
-      console.log(doc.data());
+      this.logger.log(doc.data());
       u = doc.data() as Usuario;
     });
     return u;

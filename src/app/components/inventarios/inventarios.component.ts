@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
-import { MessageService, SelectItem, ConfirmationService } from 'primeng/api';
+import { MessageService, ConfirmationService } from 'primeng/api';
 import Item from 'src/app/interfaces/item.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { ItemsService } from 'src/app/services/items.service';
 import { BaseComponent } from 'src/app/util/base.component';
-import Inventarios from 'src/app/interfaces/inventario.interface'
 import { InventariosService } from 'src/app/services/inventarios.service';
 import { Router } from '@angular/router';
-import { isEmpty } from 'rxjs';
+import { LoggerService } from 'src/app/services/logger.service';  
 
 @Component({
   selector: 'app-inventarios',
@@ -22,8 +21,9 @@ export class InventariosComponent extends BaseComponent {
     private confirmationService: ConfirmationService,
     private inventarioService: InventariosService,
     private router: Router,
-    public override authService: AuthService) {
-    super(authService);
+    public override authService: AuthService,
+    public override logger: LoggerService) {
+    super(authService, logger);
   }
 
   item!: Item;
@@ -42,7 +42,6 @@ export class InventariosComponent extends BaseComponent {
     this.litems = [];
     this.getItemsPromise();
     this.submitted = false;
-    console.info('inventarios init');
   }
 
   getItemsPromise(): void {

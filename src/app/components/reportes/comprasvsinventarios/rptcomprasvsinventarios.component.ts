@@ -8,6 +8,7 @@ import { ComprasService } from 'src/app/services/compras.service';
 import { ItemsService } from 'src/app/services/items.service';
 import Compra from 'src/app/interfaces/compra.interface'
 import Item from 'src/app/interfaces/item.interface';
+import { LoggerService } from 'src/app/services/logger.service';
 
 @Component({
   selector: 'app-rpt-comprasvsinventarios',
@@ -33,8 +34,8 @@ export class RptComprasVsInventariosComponent extends BaseComponent {
   constructor(private inventariosService: InventariosService,
     private comprasServices: ComprasService,
     private itemsService: ItemsService,
-    public override authService: AuthService) {
-    super(authService);
+    public override authService: AuthService, public override logger: LoggerService) {
+    super(authService, logger);
   }
 
   ngOnInit(): void {

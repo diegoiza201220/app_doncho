@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { BaseComponent } from 'src/app/util/base.component';
-
+import { LoggerService } from 'src/app/services/logger.service';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -12,9 +12,10 @@ export class NavbarComponent extends BaseComponent implements OnInit {
   mostrarItems: boolean = false;
   mostrarReportes: boolean = false;
   
-  constructor(public override authService: AuthService
+  constructor(public override authService: AuthService, 
+    public override logger: LoggerService
   ) {
-    super(authService);
+    super(authService, logger);
   }
 
   ngOnInit(): void {

@@ -4,10 +4,9 @@ import Item from 'src/app/interfaces/item.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { ItemsService } from 'src/app/services/items.service';
 import { BaseComponent } from 'src/app/util/base.component';
-import Compra from 'src/app/interfaces/compra.interface'
 import { ComprasService } from 'src/app/services/compras.service';
 import { Router } from '@angular/router';
-import { isEmpty } from 'rxjs';
+import { LoggerService } from 'src/app/services/logger.service';
 
 @Component({
   selector: 'app-compras',
@@ -22,8 +21,9 @@ export class ComprasComponent extends BaseComponent {
     private confirmationService: ConfirmationService,
     private compraService: ComprasService,
     private router: Router,
-    public override authService: AuthService) {
-    super(authService);
+    public override authService: AuthService,
+    public override logger: LoggerService) {
+    super(authService, logger);
   }
 
   item!: Item;
@@ -37,11 +37,10 @@ export class ComprasComponent extends BaseComponent {
 
   ngOnInit(): void {
     this.compra = {};
-    this.compra.total = 0.00;
+    this.compra.total = 0;
     this.litems = [];
     this.getItemsPromise();
     this.submitted = false;
-    console.info('compras init');
   }
 
   onBlurItem(item :any){

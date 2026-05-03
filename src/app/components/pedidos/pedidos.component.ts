@@ -10,6 +10,7 @@ import Secuencia from 'src/app/interfaces/secuencia.interface';
 import { BaseComponent } from 'src/app/util/base.component';
 import { DatePipe } from '@angular/common';
 import { AuthService } from 'src/app/services/auth.service';
+import { LoggerService } from 'src/app/services/logger.service';
 
 @Component({
   selector: 'app-pedidos',
@@ -47,9 +48,10 @@ export class PedidosComponent extends BaseComponent {
     private ordenesCocinaService: OrdenescocinaService,
     private router: Router,
     private datePipe: DatePipe,
-    public override authService: AuthService
+    public override authService: AuthService,
+    public override logger: LoggerService
   ) {
-    super(authService);
+    super(authService, logger);
   }
 
   ngOnInit(): void {
@@ -131,7 +133,7 @@ export class PedidosComponent extends BaseComponent {
     this.lproductosporciones.sort((a, b) => (Number(a.ordenaparicion) < Number(b.ordenaparicion) ? -1 : 1));
     this.lproductosbebidas.sort((a, b) => (Number(a.ordenaparicion) < Number(b.ordenaparicion) ? -1 : 1));
     this.lproductosotros.sort((a, b) => (Number(a.ordenaparicion) < Number(b.ordenaparicion) ? -1 : 1));
-    console.log(this.mostrarCargar);
+    this.logger.log(this.mostrarCargar);
   }
 
 
@@ -248,7 +250,7 @@ export class PedidosComponent extends BaseComponent {
       this.lsecuencia[0].secuencia++;
       this.actualizarSecuencia();
       this.lordencocina.forEach(element => {
-        console.log(element);
+        this.logger.log(element);
         this.ordenesCocinaService.addOrdencocina(element);
       });
       this.loading = false;
