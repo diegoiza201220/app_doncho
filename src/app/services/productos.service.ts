@@ -1,51 +1,43 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, collectionData, doc, deleteDoc, updateDoc, query, getDocs } from '@angular/fire/firestore';
-import Producto from '../interfaces/productos.interface';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { LoggerService } from 'src/app/services/logger.service';
+import { tap } from 'rxjs/operators';
+import Producto from '../interfaces/productos.interface';
+import { LoggerService } from './logger.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductosService {
+  private readonly apiUrl = `${environment.apiUrl}/producto`;
 
-  constructor(private readonly firestore: Firestore,
+  constructor(
+    private http: HttpClient,
     private readonly logger: LoggerService
-  ) { }
+  ) {}
 
-  addProducto(producto: Producto) {
-    const productoRef = collection(this.firestore, 'productos');
-    return addDoc(productoRef, producto);
+  addProducto(producto: Producto): Observable<Producto> {
+    return this.http.post<Producto>(this.apiUrl, producto);
   }
 
-  async getProductosPromise(): Promise<Producto[]> {
-    const productos: Producto[] = [];
-    const q = query(collection(this.firestore, "productos"));
-    const querySnapshot = getDocs(q);
-    (await querySnapshot).forEach((doc) => {
-      const producto: Producto = {
-        nombre: doc.get('nombre'), id: doc.id, valor: doc.get('valor'),
-        grupo: doc.get('grupo'), activo: doc.get('activo'), ordenaparicion: doc.get('ordenaparicion'), pedidoacocina: doc.get('pedidoacocina')
-      };
-      productos.push(producto);
-    });
-
-    this.logger.log(productos);
-    return productos;
+  getProductosPromise(): Promise<Producto[]> {
+    return this.http.get<Producto[]>(this.apiUrl)
+      .pipe(tap(data => this.logger.log(data)))
+      .toPromise()
+      .then(data => data ?? []);
   }
 
   getProductosObservable(): Observable<Producto[]> {
-    const productoRef = collection(this.firestore, 'productos');
-    return collectionData(productoRef, { idField: 'id' }) as Observable<Producto[]>;
+    return this.http.get<Producto[]>(this.apiUrl)
+      .pipe(tap(data => this.logger.log(data)));
   }
 
-  deleteProducto(producto: Producto) {
-    const productoDocRef = doc(this.firestore, `productos/${producto.id}`);
-    return deleteDoc(productoDocRef);
+  deleteProducto(producto: Producto): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${producto.id}`);
   }
 
-  updateProducto(producto: Producto) {
-    const productoDocRef = doc(this.firestore, `productos/${producto.id}`);
-    return updateDoc(productoDocRef, { ...producto });
+  updateProducto(producto: Producto): Observable<Producto> {
+    return this.http.put<Producto>(`${this.apiUrl}/${producto.id}`, producto);
   }
 }

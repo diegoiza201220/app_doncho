@@ -1,56 +1,36 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, collectionData, doc, deleteDoc, updateDoc, query, getDocs } from '@angular/fire/firestore';
-import Item from '../interfaces/item.interface';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import Item from '../interfaces/item.interface';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ItemsService {
+  private readonly apiUrl = `${environment.apiUrl}/item`;
 
-  constructor(private firestore: Firestore) { }
+  constructor(private http: HttpClient) {}
 
-  addItem(item: Item) {
-    const itemRef = collection(this.firestore, 'items');
-    return addDoc(itemRef, item);
+  addItem(item: Item): Observable<Item> {
+    return this.http.post<Item>(this.apiUrl, item);
   }
 
-  async getItemsPromise(): Promise<Item[]> {
-    const items: Item[] = [];
-    const q = query(collection(this.firestore, "items"));
-    const querySnapshot = getDocs(q);
-    (await querySnapshot).forEach((doc) => {
-      const item: Item = {
-        nombre: doc.get('nombre'), id: doc.id, 
-        ubicacion: doc.get('ubicacion'), 
-        familia: doc.get('familia'),
-        unidad: doc.get('unidad')
-      };
-      items.push(item);
-    });
-    return items;
+  getItemsPromise(): Promise<Item[]> {
+    return this.http.get<Item[]>(this.apiUrl)
+      .toPromise()
+      .then(data => data ?? []);
   }
 
   getItemsObservable(): Observable<Item[]> {
-    const itemRef = collection(this.firestore, 'items');
-    return collectionData(itemRef, { idField: 'id' }) as Observable<Item[]>;
+    return this.http.get<Item[]>(this.apiUrl);
   }
 
-  deleteItem(item: Item) {
-    const itemDocRef = doc(this.firestore, `items/${item.id}`);
-    return deleteDoc(itemDocRef);
+  deleteItem(item: Item): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${item.id}`);
   }
 
-  updateItem(item: Item) {
-    const itemDocRef = doc(this.firestore, `items/${item.id}`);
-    return updateDoc(itemDocRef, { ...item });
+  updateItem(item: Item): Observable<Item> {
+    return this.http.put<Item>(`${this.apiUrl}/${item.id}`, item);
   }
-  
 }
-
-
-
-
-
-

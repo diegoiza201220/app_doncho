@@ -1,39 +1,28 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, collectionData, doc, deleteDoc, updateDoc, query, getDocs, where } from '@angular/fire/firestore';
-import Inventario from '../interfaces/inventario.interface';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import Inventario from '../interfaces/inventario.interface';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InventariosService {
+  private readonly apiUrl = `${environment.apiUrl}/inventario`;
 
-  constructor(private firestore: Firestore) { }
+  constructor(private http: HttpClient) {}
 
-  addCompra(inventario: Inventario) {
-    const invetarioRef = collection(this.firestore, 'inventarios');
-    return addDoc(invetarioRef, inventario);
+  addCompra(inventario: Inventario): Observable<Inventario> {
+    return this.http.post<Inventario>(this.apiUrl, inventario);
   }
 
-  async queryInventariosPorFecha(d1: number, d2: number ): Promise<Inventario[]> {
-    const q = query(collection(this.firestore, "inventarios"), 
-              where("fechainteger", ">=", d1),
-              where("fechainteger", "<=", d2));
-    const querySnapshot = await getDocs(q);
-    let inventarios: any = [];
-    querySnapshot.forEach((doc) => {
-      let item = doc.data() as Inventario;
-      item.id = doc.id;
-      inventarios.push(item);
-    });
-    inventarios.sort((a: { secuencial: string; },b: { secuencial: any; }) => a.secuencial<b.secuencial);
-    return inventarios;
+  async queryInventariosPorFecha(d1: number, d2: number): Promise<Inventario[]> {
+    const params = new HttpParams()
+      .set('fechaDesde', d1.toString())
+      .set('fechaHasta', d2.toString());
+    const inventarios = await this.http.get<Inventario[]>(`${this.apiUrl}/porFecha`, { params }).toPromise();
+    const result = inventarios ?? [];
+    result.sort((a, b) => (a.secuencial < b.secuencial ? -1 : 1));
+    return result;
   }
 }
-
-
-
-
-
-

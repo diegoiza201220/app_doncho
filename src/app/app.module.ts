@@ -1,11 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
-import { environment } from '../environments/environment';
-import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { ProductosComponent } from './components/productos/productos.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { MainComponent } from './components/main/main.component';
@@ -36,13 +34,13 @@ import { RptVentasproductosComponent } from './components/reportes/ventasproduct
 import { ChartModule } from 'primeng/chart';
 import { ItemsComponent } from './components/items/items.component';
 import { RptOrdenesComponent } from './components/reportes/ordenes/rptordenes.component';
-import { provideAuth, getAuth } from '@angular/fire/auth';
-import { AngularFireModule } from '@angular/fire/compat';
 import { ComprasComponent } from './components/compras/compras.component';
 import { TwoDigitDecimaNumberDirective } from './util/directives/twodigitdecimalnumberdirective';
 import { InventariosComponent } from './components/inventarios/inventarios.component';
 import { RptInventariosComponent } from './components/reportes/inventarios/rptinventarios.component';
 import { RptComprasVsInventariosComponent } from './components/reportes/comprasvsinventarios/rptcomprasvsinventarios.component';
+
+import { AuthInterceptor } from './services/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -57,21 +55,31 @@ import { RptComprasVsInventariosComponent } from './components/reportes/comprasv
     RptVentasComponent,
     RptVentasproductosComponent,
     ItemsComponent,
-    RptOrdenesComponent, 
-    ComprasComponent, TwoDigitDecimaNumberDirective, InventariosComponent, RptInventariosComponent, RptComprasVsInventariosComponent
+    RptOrdenesComponent,
+    ComprasComponent,
+    TwoDigitDecimaNumberDirective,
+    InventariosComponent,
+    RptInventariosComponent,
+    RptComprasVsInventariosComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideFirestore(() => getFirestore()),
-    provideAuth(() => getAuth()),
-    AngularFireModule.initializeApp(environment.firebase),
-    TableModule, MessagesModule, InputTextModule,InputNumberModule,
-    ToastModule, FormsModule, BrowserAnimationsModule, BadgeModule, TabViewModule, ChartModule,
-    CheckboxModule, ToolbarModule, ButtonModule, DialogModule, ConfirmDialogModule,DropdownModule,SplitterModule, CalendarModule
+    HttpClientModule,       // reemplaza Firebase SDK
+    TableModule, MessagesModule, InputTextModule, InputNumberModule,
+    ToastModule, FormsModule, BrowserAnimationsModule, BadgeModule,
+    TabViewModule, ChartModule, CheckboxModule, ToolbarModule, ButtonModule,
+    DialogModule, ConfirmDialogModule, DropdownModule, SplitterModule, CalendarModule
   ],
-  providers: [ConfirmationService],
+  providers: [
+    ConfirmationService,
+    // Interceptor que adjunta el JWT Bearer token a cada petición HTTP
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

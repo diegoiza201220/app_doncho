@@ -1,40 +1,35 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, collectionData, doc, updateDoc, query, getDocs } from '@angular/fire/firestore';
-import Secuencia from '../interfaces/secuencia.interface';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { LoggerService } from 'src/app/services/logger.service';
+import { tap } from 'rxjs/operators';
+import Secuencia from '../interfaces/secuencia.interface';
+import { LoggerService } from './logger.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SecuenciaService {
+  private readonly apiUrl = `${environment.apiUrl}/secuencium`;
 
-  constructor(private readonly firestore: Firestore,
+  constructor(
+    private http: HttpClient,
     private readonly logger: LoggerService
-  ) { }
+  ) {}
 
   getSecuenciaObservable(): Observable<Secuencia[]> {
-    const secuenciaRef = collection(this.firestore, 'secuencia');
-    return collectionData(secuenciaRef, { idField: 'id' }) as Observable<Secuencia[]>;
+    return this.http.get<Secuencia[]>(this.apiUrl)
+      .pipe(tap(data => this.logger.log(data)));
   }
 
-  updateSecuencia(secuencia: Secuencia) {
-    const secuenciaDocRef = doc(this.firestore, `secuencia/${secuencia.id}`);
-    return updateDoc(secuenciaDocRef, { ...secuencia });
+  updateSecuencia(secuencia: Secuencia): Observable<Secuencia> {
+    return this.http.put<Secuencia>(`${this.apiUrl}/${secuencia.id}`, secuencia);
   }
 
-  async getSecuenciaPromise(): Promise<Secuencia[]> {
-    const secuencias: Secuencia[] = [];
-    const q = query(collection(this.firestore, "secuencia"));
-    const querySnapshot = getDocs(q);
-    (await querySnapshot).forEach((doc) => {
-      const secuencia: Secuencia = {
-        fecha: doc.get('fecha'), secuencia: doc.get('secuencia'), id: doc.id
-      };
-      secuencias.push(secuencia);
-    });
-
-    this.logger.log(secuencias);
-    return secuencias;
+  getSecuenciaPromise(): Promise<Secuencia[]> {
+    return this.http.get<Secuencia[]>(this.apiUrl)
+      .pipe(tap(data => this.logger.log(data)))
+      .toPromise()
+      .then(data => data ?? []);
   }
 }

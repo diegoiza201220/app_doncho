@@ -1,27 +1,35 @@
-import { Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, collectionData, doc, updateDoc} from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Injectable, OnDestroy } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, interval, switchMap, startWith, share } from 'rxjs';
 import Ordencocina from '../interfaces/ordencocina.interface';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class OrdenescocinaService {
+export class OrdenescocinaService implements OnDestroy {
+  private readonly apiUrl = `${environment.apiUrl}/ordencocina`;
 
-  constructor(private firestore:Firestore) { }
+  // Polling cada 5 segundos para simular el listener en tiempo real de Firestore
+  private readonly ordenescocina$: Observable<Ordencocina[]> = interval(5000).pipe(
+    startWith(0),
+    switchMap(() => this.http.get<Ordencocina[]>(this.apiUrl)),
+    share()
+  );
 
-  addOrdencocina(ordenCocina: Ordencocina){
-    const productoRef = collection(this.firestore, 'ordenescocina');
-    return addDoc(productoRef, ordenCocina);
+  constructor(private http: HttpClient) {}
+
+  addOrdencocina(ordenCocina: Ordencocina): Observable<Ordencocina> {
+    return this.http.post<Ordencocina>(this.apiUrl, ordenCocina);
   }
 
-  getOrdenescocinaObservable(): Observable<Ordencocina[]>{
-    const ordencocinaRef = collection(this.firestore, 'ordenescocina');
-    return collectionData(ordencocinaRef, {idField:'id'}, ) as Observable<Ordencocina[]>;
+  getOrdenescocinaObservable(): Observable<Ordencocina[]> {
+    return this.ordenescocina$;
   }
 
-  updateOrdenescocina(ordenCocina: Ordencocina) {
-    const ordencocinaDocRef = doc(this.firestore, `ordenescocina/${ordenCocina.id}`);
-    return updateDoc(ordencocinaDocRef, { ...ordenCocina });
+  updateOrdenescocina(ordenCocina: Ordencocina): Observable<Ordencocina> {
+    return this.http.put<Ordencocina>(`${this.apiUrl}/${ordenCocina.id}`, ordenCocina);
   }
+
+  ngOnDestroy(): void {}
 }

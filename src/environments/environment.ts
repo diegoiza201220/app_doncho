@@ -8,4 +8,5 @@ export const environment = {
     authDomain: 'doncho-9c420.firebaseapp.com',
     messagingSenderId: '700619355826',
   },
+  apiUrl: 'http://localhost:5109/api'
 };

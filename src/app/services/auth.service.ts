@@ -1,51 +1,39 @@
 import { Injectable, NgZone } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import User from '../interfaces/user.interface';
+import { firstValueFrom } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   public userData: any;
+  private readonly apiUrl = environment.apiUrl;
 
   constructor(
-    private firebaseAuthenticationService: AngularFireAuth,
+    private http: HttpClient,
     private router: Router,
     private ngZone: NgZone
-  ) {
-    // OBSERVER save user in localStorage (log-in) and setting up null when log-out
-    
-    // this.firebaseAuthenticationService.authState.subscribe((user) => {
-    //   if (user) {
-    //     this.userData = user;
-    //     localStorage.setItem('user', JSON.stringify(this.userData));
-    //   } else {
-    //     localStorage.setItem('user', 'null');
-    //   }
-    // })
+  ) {}
 
-  }
-
-  // log-in with email and password
-  logInWithEmailAndPassword(email: string, password: string) {
-    return this.firebaseAuthenticationService.signInWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        //this.userData as User;
-        //this.userData.id = { id: userCredential.user?.uid, email : userCredential.user?.email};
-        this.userData = userCredential.user
+  // log-in con email y contraseña contra la API REST
+  logInWithEmailAndPassword(nombre: string, password: string): Promise<void> {
+    return firstValueFrom(
+      this.http.post<{ token: string; user: any }>(
+        `${this.apiUrl}/login/validatelogin`,
+        { nombre, password }
+      )
+    )
+      .then((response) => {
+        this.userData = response!.user;
         localStorage.setItem('user', JSON.stringify(this.userData));
-        this.observeUserState()
+        localStorage.setItem('token', response!.token);
+        this.ngZone.run(() => this.router.navigate(['main']));
       })
       .catch((error) => {
-        alert(error.message);
-      })
-  }
-
-  observeUserState() {
-    this.firebaseAuthenticationService.authState.subscribe((userState) => {
-      userState && this.ngZone.run(() => this.router.navigate(['main']))
-    })
+        alert(error?.error?.message ?? 'Error al iniciar sesión');
+      });
   }
 
   // return true when user is logged in
@@ -56,14 +44,16 @@ export class AuthService {
 
   get userEmail(): string {
     const user = JSON.parse(localStorage.getItem('user')!);
-    return user.email ;
-  }
-  // logOut
-  logOut() {
-    return this.firebaseAuthenticationService.signOut().then(() => {
-      localStorage.removeItem('user');
-      this.router.navigate(['login']);
-    })
+    return user?.email ?? '';
   }
 
+  // logOut
+  logOut(): Promise<void> {
+    return firstValueFrom(this.http.post<void>(`${this.apiUrl}/auth/logout`, {}))
+      .finally(() => {
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
+        this.router.navigate(['login']);
+      });
+  }
 }

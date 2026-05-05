@@ -1,26 +1,38 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, collectionData, doc, updateDoc } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, interval, switchMap, startWith, share } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import Produccioncocina from '../interfaces/produccioncocina.interface';
-import { LoggerService } from 'src/app/services/logger.service';
+import { LoggerService } from './logger.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProduccioncocinaService {
+  private readonly apiUrl = `${environment.apiUrl}/produccioncocina`;
 
-    constructor(private readonly firestore: Firestore,
-      private readonly logger: LoggerService
-  ) { }
+  // Polling cada 5 segundos para simular el listener en tiempo real de Firestore
+  private readonly produccioncocina$: Observable<Produccioncocina[]> = interval(5000).pipe(
+    startWith(0),
+    switchMap(() => this.http.get<Produccioncocina[]>(this.apiUrl)),
+    share()
+  );
+
+  constructor(
+    private readonly http: HttpClient,
+    private readonly logger: LoggerService
+  ) {}
 
   getProduccioncocinaObservable(): Observable<Produccioncocina[]> {
-    const produccioncocinaRef = collection(this.firestore, 'produccioncocina');
-    return collectionData(produccioncocinaRef, { idField: 'id' },) as Observable<Produccioncocina[]>;
+    return this.produccioncocina$;
   }
 
-  updateProduccioncocina(produccionCocina: Produccioncocina) {
+  updateProduccioncocina(produccionCocina: Produccioncocina): Observable<Produccioncocina> {
     this.logger.log(produccionCocina);
-    const produccioncocinaDocRef = doc(this.firestore, `produccioncocina/${produccionCocina.id}`);
-    return updateDoc(produccioncocinaDocRef, { ...produccionCocina });
+    return this.http.put<Produccioncocina>(
+      `${this.apiUrl}/${produccionCocina.id}`,
+      produccionCocina
+    );
   }
 }

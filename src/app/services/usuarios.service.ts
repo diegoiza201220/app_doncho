@@ -1,31 +1,24 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, collectionData, getDoc, query, where, getDocs} from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import Usuario from '../interfaces/usuario.interface';
-import { LoggerService } from 'src/app/services/logger.service';
+import { LoggerService } from './logger.service';
+import { environment } from '../../environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class UsuariosService {
+  private readonly apiUrl = `${environment.apiUrl}/usuario`;
 
-  constructor(private readonly firestore:Firestore,
+  constructor(
+    private readonly http: HttpClient,
     private readonly logger: LoggerService
-  ) { }
+  ) {}
 
-  async query(usuario: Usuario): Promise<Usuario>{
-    let u : Usuario = {nombre:'',password:'.'};
-    const q = query(
-      collection(this.firestore, "usuarios"),
-      where("nombre", "==", usuario.nombre),
-      where("password", "==", usuario.password)
-    );
-    
-    const docsSnap = await getDocs(q);
-        
-    docsSnap.forEach((doc) => {
-      this.logger.log(doc.data());
-      u = doc.data() as Usuario;
-    });
-    return u;
+  async query(usuario: Usuario): Promise<Usuario> {
+    const result = await this.http.post<Usuario>(`${this.apiUrl}/validar`, usuario)
+      .toPromise();
+    this.logger.log(result);
+    return result ?? { nombre: '', password: '.' };
   }
 }
