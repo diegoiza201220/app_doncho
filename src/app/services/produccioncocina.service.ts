@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, interval, switchMap, startWith, share } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import Produccioncocina from '../interfaces/produccioncocina.interface';
 import { LoggerService } from './logger.service';
 import { environment } from '../../environments/environment';

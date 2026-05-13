@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, firstValueFrom } from 'rxjs';
 import Inventario from '../interfaces/inventario.interface';
 import { environment } from '../../environments/environment';
 
@@ -10,7 +10,7 @@ import { environment } from '../../environments/environment';
 export class InventariosService {
   private readonly apiUrl = `${environment.apiUrl}/inventario`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   addCompra(inventario: Inventario): Observable<Inventario> {
     return this.http.post<Inventario>(this.apiUrl, inventario);
@@ -20,7 +20,7 @@ export class InventariosService {
     const params = new HttpParams()
       .set('fechaDesde', d1.toString())
       .set('fechaHasta', d2.toString());
-    const inventarios = await this.http.get<Inventario[]>(`${this.apiUrl}/porFecha`, { params }).toPromise();
+    const inventarios = await firstValueFrom(this.http.get<Inventario[]>(`${this.apiUrl}/porFecha`, { params }));
     const result = inventarios ?? [];
     result.sort((a, b) => (a.secuencial < b.secuencial ? -1 : 1));
     return result;

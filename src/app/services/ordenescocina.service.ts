@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, interval, switchMap, startWith, share } from 'rxjs';
 import Ordencocina from '../interfaces/ordencocina.interface';
@@ -7,7 +7,7 @@ import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class OrdenescocinaService implements OnDestroy {
+export class OrdenescocinaService {
   private readonly apiUrl = `${environment.apiUrl}/ordencocina`;
 
   // Polling cada 5 segundos para simular el listener en tiempo real de Firestore
@@ -17,7 +17,7 @@ export class OrdenescocinaService implements OnDestroy {
     share()
   );
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   addOrdencocina(ordenCocina: Ordencocina): Observable<Ordencocina> {
     return this.http.post<Ordencocina>(this.apiUrl, ordenCocina);
@@ -30,6 +30,4 @@ export class OrdenescocinaService implements OnDestroy {
   updateOrdenescocina(ordenCocina: Ordencocina): Observable<Ordencocina> {
     return this.http.put<Ordencocina>(`${this.apiUrl}/${ordenCocina.id}`, ordenCocina);
   }
-
-  ngOnDestroy(): void {}
 }

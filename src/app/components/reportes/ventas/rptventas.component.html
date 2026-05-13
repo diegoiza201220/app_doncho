@@ -6,46 +6,40 @@
     <button (click)="Buscar()">Buscar</button>
 </div>
 
-<p-table #dt [value]="lregistros" [exportHeader]="'resumen de ventas'" sortField="tipodepago" sortMode="single"
-    [scrollable]="true" scrollHeight="400px" rowGroupMode="subheader" groupRowsBy="tipodepago"
+<p-table #dt [value]="lregistros" [exportHeader]="'resumen de ventas'" sortField="tipoPago" sortMode="single"
+    [scrollable]="true" scrollHeight="400px" rowGroupMode="subheader" groupRowsBy="tipoPago"
     [tableStyle]="{'min-width': '60rem'}">
     <ng-template pTemplate="groupheader" let-registro>
         <tr pRowGroupHeader>
             <td colspan="5">
-                <span class="font-bold ml-2">Tipo de pago: {{registro.tipodepago}}</span>
+                <span class="font-bold ml-2">Tipo de pago: {{registro.tipoPago}}</span>
             </td>
         </tr>
     </ng-template>
     <ng-template pTemplate="groupfooter" let-registro>
         <tr>
-            <td colspan="5" class="text-right font-bold pr-6">Total tipo de pago {{registro.tipodepago}}:
-                {{calculateTipodepagoTotal(registro.tipodepago) | currency:'USD'}}</td>
+            <td colspan="5" class="text-right font-bold pr-6">Total tipo de pago {{registro.tipoPago}}:
+                {{calculateTipodepagoTotal(registro.tipoPago) | currency:'USD'}}</td>
         </tr>
-    </ng-template>
-    <ng-template pTemplate="caption">
-        <!-- <div class="flex">
-            <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()"
-                class="p-button-success mr-2" pTooltip="XLS" tooltipPosition="bottom"></button>
-        </div> -->
     </ng-template>
     <ng-template pTemplate="header">
         <tr>
-            <th>Fecha</th>
-            <th>Orden No.</th>
-            <th>Cliente</th>
-            <th>Valor</th>
-            <th>Tipo de pago</th>
-            <th>Documento de pago</th>
+            <th scope="col">Fecha</th>
+            <th scope="col">Orden No.</th>
+            <th scope="col">Cliente</th>
+            <th scope="col">Valor</th>
+            <th scope="col">Tipo de pago</th>
+            <th scope="col">Documento de pago</th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-registro>
         <tr>
-            <td>{{ registro.fecha?.toDate() | date: 'medium'}}</td>
+            <td>{{ registro.fecha | date:'dd.MM.yyyy HH:mm:ss'}}</td>
             <td>{{ registro.secuencial }}</td>
-            <td>{{ registro.cliente }}</td>
-            <td>{{ registro.totalorden | currency:'USD' }}</td>
-            <td>{{ registro.tipodepago }}</td>
-            <td>{{ registro.documentopago }}</td>
+            <td>{{ registro.nombre + ' ' + registro.apellido }}</td>
+            <td>{{ registro.totalOrden | currency:'USD' }}</td>
+            <td>{{ registro.tipoPago }}</td>
+            <td>{{ registro.documentoPago }}</td>
         </tr>
     </ng-template>
 </p-table>

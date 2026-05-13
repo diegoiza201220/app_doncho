@@ -16,7 +16,7 @@ export class RptVentasComponent extends BaseComponent {
 
   d1 = new Date();
   d2 = new Date();
-  lregistros!: Orden[];
+  lregistros!: any[];
 
   constructor(private ordenesService: OrdenesService, public override authService: AuthService, public override logger: LoggerService) {
     super(authService, logger);
@@ -30,7 +30,11 @@ export class RptVentasComponent extends BaseComponent {
 
   Buscar() {
 
-    this.ordenesService.queryOrdenesPorFecha(this.fechaToInteger(this.d1), this.fechaToInteger(this.d2)).then(resp => {
+    let rqOrdenesPorFechas = {
+      FechaIni: this.fechaToInteger(this.d1),
+      FechaFin: this.fechaToInteger(this.d2)
+    }
+    this.ordenesService.queryOrdenesPorFecha(rqOrdenesPorFechas).then(resp => {
       this.lregistros = resp;
     });
 
@@ -63,13 +67,13 @@ export class RptVentasComponent extends BaseComponent {
   //   FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
   // }
 
-  calculateTipodepagoTotal(tipodepago: string) {
+  calculateTipodepagoTotal(tipopago: string) {
     let total = 0;
 
     if (this.lregistros) {
       for (let registro of this.lregistros) {
-        if (registro.tipodepago === tipodepago) {
-          total+= registro.totalorden;
+        if (registro.tipoPago === tipopago) {
+          total+= registro.totalOrden;
         }
       }
     }

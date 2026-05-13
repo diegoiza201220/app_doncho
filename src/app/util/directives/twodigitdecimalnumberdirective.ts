@@ -3,9 +3,9 @@ import { Directive, ElementRef, HostListener } from '@angular/core';
   selector: '[appTwoDigitDecimaNumber]'
 })
 export class TwoDigitDecimaNumberDirective {
-  private regex: RegExp = new RegExp(/^\d*\.?\d{0,2}$/g);
-  private specialKeys: Array<string> = ['Backspace', 'Tab', 'End', 'Home', '-', 'ArrowLeft', 'ArrowRight', 'Del', 'Delete'];
-  constructor(private el: ElementRef) {
+  private readonly regex: RegExp = new RegExp(/^\d*\.?\d{0,2}$/g);
+  private readonly specialKeys: Array<string> = ['Backspace', 'Tab', 'End', 'Home', '-', 'ArrowLeft', 'ArrowRight', 'Del', 'Delete'];
+  constructor(private readonly el: ElementRef) {
   }
   @HostListener('keydown', ['$event'])
   onKeyDown(event: KeyboardEvent) {

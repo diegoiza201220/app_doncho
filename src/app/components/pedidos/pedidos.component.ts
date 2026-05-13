@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import Producto from 'src/app/interfaces/productos.interface';
 import { ProductosService } from 'src/app/services/productos.service';
 import { MessageService, ConfirmationService } from 'primeng/api';
@@ -18,7 +18,7 @@ import { LoggerService } from 'src/app/services/logger.service';
   styleUrls: ['./pedidos.component.css'],
   providers: [MessageService, ConfirmationService, DatePipe]
 })
-export class PedidosComponent extends BaseComponent {
+export class PedidosComponent extends BaseComponent implements OnInit {
   lproductos: any[] = [];
   lproductoschoclo: any[] = [];
   lproductoschocho: any[] = [];
@@ -26,7 +26,7 @@ export class PedidosComponent extends BaseComponent {
   lproductosbebidas: any[] = [];
   lproductosotros: any[] = [];
 
-  lsecuencia: Secuencia[] = [{ secuencia: 0, id: '', fecha: 0 }];
+  lsecuencia: Secuencia = { secuencia: 0, id: '', fecha: 0 };
   pedido: any = {};
   lordencocina: any[] = [];
   mostrarCargar: boolean = true;
@@ -38,16 +38,16 @@ export class PedidosComponent extends BaseComponent {
   fechainteger: number = 0;
   activeIndex: number = 0;
 
-  @ViewChild('efectivorecibido') input: ElementRef | undefined; 
+  @ViewChild('efectivorecibido') input: ElementRef | undefined;
 
-  constructor(private productosService: ProductosService,
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService,
-    private secuenciaService: SecuenciaService,
-    private ordenesService: OrdenesService,
-    private ordenesCocinaService: OrdenescocinaService,
-    private router: Router,
-    private datePipe: DatePipe,
+  constructor(private readonly productosService: ProductosService,
+    private readonly messageService: MessageService,
+    private readonly confirmationService: ConfirmationService,
+    private readonly secuenciaService: SecuenciaService,
+    private readonly ordenesService: OrdenesService,
+    private readonly ordenesCocinaService: OrdenescocinaService,
+    private readonly router: Router,
+    private readonly datePipe: DatePipe,
     public override authService: AuthService,
     public override logger: LoggerService
   ) {
@@ -61,20 +61,23 @@ export class PedidosComponent extends BaseComponent {
   }
 
   getProductosPromise(): void {
-    this.productosService.getProductosPromise().then(productos => {
-      this.lproductos = productos;
+    this.lproductos = [];
+    this.productosService.getProductosPromise().then(data => {
+      data.productos.forEach((producto: Producto) => {
+        this.lproductos.push(producto);
+      });
       this.fillGrupoProducto();
     })
   }
 
   getSecuenciaPromise(): void {
-    this.secuenciaService.getSecuenciaPromise().then(secuencia => {
-      this.lsecuencia = secuencia;
+    this.secuenciaService.getSecuenciaPromise().then(data => {
+      this.lsecuencia = data.facsecuenciadia[0];
       let d = new Date();
       this.fechainteger = this.fechaToInteger(d);
-      if (this.lsecuencia[0].fecha !== this.fechainteger) {
-        this.lsecuencia[0].fecha = this.fechainteger;
-        this.lsecuencia[0].secuencia = 1;
+      if (this.lsecuencia.fecha !== this.fechainteger) {
+        this.lsecuencia.fecha = this.fechainteger;
+        this.lsecuencia.secuencia = 1;
       }
     })
   }
@@ -89,10 +92,10 @@ export class PedidosComponent extends BaseComponent {
     this.secuenciaService.getSecuenciaObservable().subscribe(secuencia => {
       let d = new Date();
       this.fechainteger = this.fechaToInteger(d);
-      this.lsecuencia = secuencia;
-      if (this.lsecuencia[0].fecha !== this.fechainteger) {
-        this.lsecuencia[0].fecha = this.fechainteger;
-        this.lsecuencia[0].secuencia = 1;
+      this.lsecuencia = secuencia[0];
+      if (this.lsecuencia.fecha !== this.fechainteger) {
+        this.lsecuencia.fecha = this.fechainteger;
+        this.lsecuencia.secuencia = 1;
       }
     })
   }
@@ -163,25 +166,21 @@ export class PedidosComponent extends BaseComponent {
   }
 
   onChangeTab(event: any) {
-    //debugger;
     this.activeIndex = event.index;
     switch (event.index) {
       case 1: {
         this.cargarDetalleOrden();
-        this.focusPago();
+        break;
+      }
+      case 2: {
         break;
       }
     }
   }
 
-  focusPago(){
-    //this.input?.nativeElement.focus();
-  }
-
   continueToResumen() {
     this.activeIndex = 1;
     this.cargarDetalleOrden();
-    this.focusPago();
   }
 
   backToSeleccion() {
@@ -189,24 +188,27 @@ export class PedidosComponent extends BaseComponent {
   }
 
   cargarDetalleOrden() {
-    this.pedido.productos = [];
+    this.pedido.FacDetalleOrdens = [];
     this.calcularDetalles(this.lproductoschocho.filter(x => x.badge > 0));
     this.calcularDetalles(this.lproductoschoclo.filter(x => x.badge > 0));
     this.calcularDetalles(this.lproductosporciones.filter(x => x.badge > 0));
     this.calcularDetalles(this.lproductosbebidas.filter(x => x.badge > 0));
     this.calcularDetalles(this.lproductosotros.filter(x => x.badge > 0));
-    this.pedido.totalorden = this.pedido.productos.reduce((sum: any, current: { preciototal: any; }) => sum + current.preciototal, 0);
+    this.pedido.TotalOrden = this.pedido.FacDetalleOrdens.reduce((sum: any, current: { PrecioTotal: any; }) => sum + current.PrecioTotal, 0);
   }
 
   calcularDetalles(lista: any[]) {
     lista.forEach(element => {
-      this.pedido.productos.push(
+      this.pedido.FacDetalleOrdens.push(
         {
-          cantidad: element.badge,
+          ProductoId: element.id,
+          Cantidad: element.badge,
           plato: element.nombre,
-          preciounitario: element.valor,
-          preciototal: element.badge * element.valor,
-          pedidoacocina: element.pedidoacocina
+          PrecioUnitario: element.valor,
+          ValorIva: 0,
+          CodigoIva: '0',
+          PrecioTotal: element.badge * element.valor,
+          PedidoACocina: element.pedidoacocina
         });
     });
   }
@@ -218,7 +220,7 @@ export class PedidosComponent extends BaseComponent {
   }
 
   calcularCambio(value: any) {
-    this.cambio = this.pago - this.pedido.totalorden;
+    this.cambio = this.pago - this.pedido.TotalOrden;
   }
 
   grabarOrden() {
@@ -228,38 +230,20 @@ export class PedidosComponent extends BaseComponent {
     this.loading = true;
     setTimeout(() => {
       let d = new Date();
-      this.pedido.usuario = this.authService.userEmail;
-      this.pedido.secuencial = this.lsecuencia[0].secuencia;
-      this.pedido.tipodepago = this.selectedFP;
-      this.pedido.fecha = d;
-      this.pedido.fechainteger = this.fechainteger;
-      this.pedido.productos.forEach((element: { plato: any; cantidad: any; pedidoacocina: any; }) => {
-        if (element.pedidoacocina) {
-          this.lordencocina.push({
-            secuencialorden: this.lsecuencia[0].secuencia,
-            producto: element.plato,
-            cantidad: element.cantidad,
-            recibido: false,
-            procesado: false,
-            entregado: false,
-            observacion: ''
-          })
-        }
-      });
+      this.pedido.Clienteid = 4;
+      this.pedido.UsuarioRegistro = this.authService.userEmail;
+      this.pedido.Secuencial = this.lsecuencia.secuencia;
+      this.pedido.TipoPago = this.selectedFP;
+      this.pedido.Fecha = d;
+      this.pedido.FechaInteger = this.fechainteger;
+      this.pedido.ValorIva = 0;
+      this.pedido.NumeroFactura = '000';
+      this.pedido.CodigoIva = '0';
+      this.pedido.DocumentoPago = '';
       this.ordenesService.addOrden(this.pedido);
-      this.lsecuencia[0].secuencia++;
-      this.actualizarSecuencia();
-      this.lordencocina.forEach(element => {
-        this.logger.log(element);
-        this.ordenesCocinaService.addOrdencocina(element);
-      });
       this.loading = false;
     }, 100);
 
     this.router.navigateByUrl('main');
-  }
-
-  async actualizarSecuencia() {
-    const response = await this.secuenciaService.updateSecuencia(this.lsecuencia[0]);
   }
 }

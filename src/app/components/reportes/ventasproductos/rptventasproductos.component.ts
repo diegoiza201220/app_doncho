@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import Orden from 'src/app/interfaces/orden.interface';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { OrdenesService } from 'src/app/services/ordenes.service';
 import { BaseComponent } from 'src/app/util/base.component';
@@ -11,11 +10,11 @@ import { LoggerService } from 'src/app/services/logger.service';
   styleUrls: ['./rptventasproductos.component.css']
 })
 
-export class RptVentasproductosComponent extends BaseComponent {
+export class RptVentasproductosComponent extends BaseComponent implements OnInit {
 
   d1 = new Date();
   d2 = new Date();
-  lregistros!: Orden[];
+  lregistros!: any[];
   ready = false;
 
 
@@ -29,8 +28,8 @@ export class RptVentasproductosComponent extends BaseComponent {
   basicDataPie: any;
   basicOptionsPie: any;
 
-  constructor(private ordenesService: OrdenesService, 
-    public override authService: AuthService, 
+  constructor(private readonly ordenesService: OrdenesService,
+    public override authService: AuthService,
     public override logger: LoggerService) {
     super(authService, logger);
   }
@@ -41,19 +40,19 @@ export class RptVentasproductosComponent extends BaseComponent {
   }
 
   Buscar() {
-    this.ordenesService.queryOrdenesPorFecha(this.fechaToInteger(this.d1), this.fechaToInteger(this.d2)).then(resp => {
-      this.lregistros = resp;
+    this.ldata = [];
+    this.lregistros = [];
+    let rqOrdenesPorFechas = {
+      FechaIni: this.fechaToInteger(this.d1),
+      FechaFin: this.fechaToInteger(this.d2)
+    }
+    this.ordenesService.queryProductosVendidosPorFecha(rqOrdenesPorFechas).then(resp => {
+      this.ldata = resp;
       this.ready = true;
     });
   }
 
   procesarData() {
-    this.lregistros.forEach(element => {
-      element.productos.forEach(element2 => {
-        this.ldata.push({ id: element2.plato, cantidad: element2.cantidad });
-      });
-    });
-
     this.procesarDataBar();
     this.procesarDataPie();
     this.ready = false;
@@ -62,20 +61,13 @@ export class RptVentasproductosComponent extends BaseComponent {
   procesarDataPie() {
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
-    let ldataPie: any[] = [];
-
-    const result = Object.values(this.ldata.reduce((r, o) => (r[o.id]
-      ? (r[o.id].cantidad += o.cantidad)
-      : (r[o.id] = { ...o }), r), {}));
-
-    ldataPie = result;
+    let ldataPie = this.ldata;
 
     const label: any[] = [];
     const data: any[] = [];
 
-    ldataPie.sort((a, b) => (a.cantidad > b.cantidad ? -1 : 1));
     ldataPie.forEach(element => {
-      label.push(element.id);
+      label.push(element.plato);
       data.push(element.cantidad);
     });
 
@@ -111,17 +103,12 @@ export class RptVentasproductosComponent extends BaseComponent {
 
     this.ldataBar = [];
 
-    const result = Object.values(this.ldata.reduce((r, o) => (r[o.id]
-      ? (r[o.id].cantidad += o.cantidad)
-      : (r[o.id] = { ...o }), r), {}));
-
-    this.ldataBar = result;
+    this.ldataBar = this.ldata;
     const label: any[] = [];
     const data: any[] = [];
 
-    this.ldataBar.sort((a, b) => (a.cantidad > b.cantidad ? -1 : 1));
     this.ldataBar.forEach(element => {
-      label.push(element.id);
+      label.push(element.plato);
       data.push(element.cantidad);
       this.bgcolor.push(this.randomRGB());
     });

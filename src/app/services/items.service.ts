@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, firstValueFrom } from 'rxjs';
 import Item from '../interfaces/item.interface';
 import { environment } from '../../environments/environment';
 
@@ -10,16 +10,14 @@ import { environment } from '../../environments/environment';
 export class ItemsService {
   private readonly apiUrl = `${environment.apiUrl}/item`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   addItem(item: Item): Observable<Item> {
     return this.http.post<Item>(this.apiUrl, item);
   }
 
   getItemsPromise(): Promise<Item[]> {
-    return this.http.get<Item[]>(this.apiUrl)
-      .toPromise()
-      .then(data => data ?? []);
+    return firstValueFrom(this.http.get<Item[]>(this.apiUrl));
   }
 
   getItemsObservable(): Observable<Item[]> {

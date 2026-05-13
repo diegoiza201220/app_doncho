@@ -12,9 +12,9 @@ export class AuthService {
   private readonly apiUrl = environment.apiUrl;
 
   constructor(
-    private http: HttpClient,
-    private router: Router,
-    private ngZone: NgZone
+    private readonly http: HttpClient,
+    private readonly router: Router,
+    private readonly ngZone: NgZone
   ) {}
 
   // log-in con email y contraseña contra la API REST
@@ -26,9 +26,9 @@ export class AuthService {
       )
     )
       .then((response) => {
-        this.userData = response!.user;
+        this.userData = response.user;
         localStorage.setItem('user', JSON.stringify(this.userData));
-        localStorage.setItem('token', response!.token);
+        localStorage.setItem('token', response.token);
         this.ngZone.run(() => this.router.navigate(['main']));
       })
       .catch((error) => {
@@ -44,7 +44,7 @@ export class AuthService {
 
   get userEmail(): string {
     const user = JSON.parse(localStorage.getItem('user')!);
-    return user?.email ?? '';
+    return user ?? '';
   }
 
   // logOut

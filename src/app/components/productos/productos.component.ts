@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MessageService, SelectItem, ConfirmationService } from 'primeng/api';
 import Producto from 'src/app/interfaces/productos.interface';
 import { ProductosService } from 'src/app/services/productos.service';
@@ -10,7 +10,7 @@ import { LoggerService } from 'src/app/services/logger.service';
   styleUrls: ['./productos.component.css'],
   providers: [MessageService, ConfirmationService]
 })
-export class ProductosComponent {
+export class ProductosComponent implements OnInit {
 
   producto!: Producto;
 
@@ -32,14 +32,13 @@ export class ProductosComponent {
     { label: 'OTROS', value: 'OTROS' }
   ];
 
-  constructor(private productosService: ProductosService, 
-    private messageService: MessageService, 
-    private confirmationService: ConfirmationService,
-    private logger: LoggerService) {
+  constructor(private readonly productosService: ProductosService, 
+    private readonly messageService: MessageService, 
+    private readonly confirmationService: ConfirmationService,
+    private readonly logger: LoggerService) {
   }
 
   ngOnInit(): void {
-    //this.getProductosObserver();
     this.getProductosPromise();
   }
 
@@ -70,24 +69,39 @@ export class ProductosComponent {
   }
 
   getProductosPromise(): void{
-    this.productosService.getProductosPromise().then( productos => {
-      this.lproductos = productos;
-      console.log(this.lproductos);
+    this.lproductos = [];
+    this.productosService.getProductosPromise().then( data => {
+      data.productos.forEach((producto: Producto) => {
+        this.lproductos.push(producto);
+      });
     })
   }
+
   async addProducto() {
-    const response = await this.productosService.addProducto(this.producto);
-    this.logger.log(response);
+    this.lproductos = [];
+    this.productosService.addProducto(this.producto)
+      .subscribe(response => {
+        this.logger.log(response);
+        this.getProductosPromise();
+      })
   }
 
   async deleteProducto(producto: Producto) {
-    const response = await this.productosService.deleteProducto(producto);
-    this.logger.log(response);
+    this.lproductos = [];
+    this.productosService.deleteProducto(producto)
+      .subscribe(response => {
+        this.logger.log(response);
+        this.getProductosPromise();
+      })
   }
 
   async updateProducto(producto: Producto) {
-    const response = await this.productosService.updateProducto(producto);
-    this.logger.log(response);
+    this.lproductos = [];
+    this.productosService.updateProducto(producto)
+      .subscribe(response => {
+        this.logger.log(response);
+        this.getProductosPromise();
+      });
   }
 
   onRowEditInit(producto: Producto) {
@@ -97,7 +111,6 @@ export class ProductosComponent {
   onRowEditSave(producto: Producto) {
     this.updateProducto(producto);
     this.messageService.add({ severity: 'success', summary: '¡Muy bien! ', detail: 'Producto actualizado' });
-    this.getProductosPromise();
   }
 
   onRowEditCancel(producto: Producto, index: number) {

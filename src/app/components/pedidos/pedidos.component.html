@@ -5,7 +5,7 @@
                 <span>
                     <!-- <p-button (onClick)="fillGrupoProducto();" *ngIf="this.mostrarCargar">Cargar productos!
                     </p-button> -->
-                    <H5>ORDEN NUMERO: {{ lsecuencia[0].secuencia }}</H5>
+                    <H5>ORDEN NUMERO: {{ lsecuencia.secuencia }}</H5>
                 </span>
             </div>
             <div class="row" style="background-color: white;">
@@ -93,9 +93,9 @@
 
         </p-tabPanel>
         <p-tabPanel header="Resumen de orden">
-            <h1>ORDEN NUMERO: {{ lsecuencia[0].secuencia }}</h1>
+            <h1>ORDEN NUMERO: {{ lsecuencia.secuencia }}</h1>
 
-            <p-table #dt [value]="pedido.productos" dataKey="id" [tableStyle]="{'min-width': '50rem'}"
+            <p-table #dt [value]="pedido.FacDetalleOrdens" dataKey="id" [tableStyle]="{'min-width': '50rem'}"
                 [rowHover]="true">
                 <ng-template pTemplate="header">
                     <tr>
@@ -107,10 +107,10 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-producto>
                     <tr>
-                        <td>{{ producto.cantidad }}</td>
-                        <td>{{ producto.plato }}</td>
-                        <td>{{ producto.preciounitario | currency:'USD':'symbol'}}</td>
-                        <td>{{ producto.preciototal | currency:'USD':'symbol'}}</td>
+                        <td>{{ producto.Cantidad }}</td>
+                        <td>{{ producto.Plato }}</td>
+                        <td>{{ producto.PrecioUnitario | currency:'USD':'symbol'}}</td>
+                        <td>{{ producto.PrecioTotal | currency:'USD':'symbol'}}</td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="summary">
@@ -119,7 +119,7 @@
                         <td></td>
                         <td></td>
                         <td>Total a cancelar : <span class="tab"></span></td>
-                        <td style="color: red; font-size: xx-large;">{{ pedido.totalorden | currency:'USD':'symbol' }}
+                        <td style="color: red; font-size: xx-large;">{{ pedido.TotalOrden | currency:'USD':'symbol' }}
                         </td>
                     </tr>
                 </ng-template>
